@@ -1,0 +1,2607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE Society - Premium Mentorship Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        navy: {
+                            800: '#0f172a',
+                            900: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- TOP ROLE CONTROL / NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 bg-slate-900 text-white shadow-lg border-b border-slate-800">
+        <!-- System Role Selector Banner -->
+        <div class="bg-indigo-900/90 text-indigo-100 text-xs px-4 py-1.5 flex flex-wrap justify-between items-center border-b border-indigo-800">
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-medium">Direct Portal Quick-Switch / Demo:</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 my-1 sm:my-0">
+                <button onclick="switchView('public')" id="btn-view-public" class="role-btn px-2.5 py-0.5 rounded bg-indigo-600 text-white font-semibold shadow text-xs hover:bg-indigo-500 transition">
+                    <i class="fa-solid font-normal fa-globe mr-1"></i> Public Website
+                </button>
+                <button onclick="switchView('admin')" id="btn-view-admin" class="role-btn px-2.5 py-0.5 rounded bg-slate-800 text-indigo-200 hover:bg-indigo-700 transition font-medium text-xs">
+                    <i class="fa-solid fa-user-shield mr-1"></i> Admin Portal
+                </button>
+                <button onclick="switchView('mentee')" id="btn-view-mentee" class="role-btn px-2.5 py-0.5 rounded bg-slate-800 text-indigo-200 hover:bg-indigo-700 transition font-medium text-xs">
+                    <i class="fa-solid fa-user-graduate mr-1"></i> Mentee Dashboard
+                </button>
+                <button onclick="switchView('mentor')" id="btn-view-mentor" class="role-btn px-2.5 py-0.5 rounded bg-slate-800 text-indigo-200 hover:bg-indigo-700 transition font-medium text-xs">
+                    <i class="fa-solid fa-chalkboard-user mr-1"></i> Mentor Portal
+                </button>
+                <button onclick="openLoginModal('mentee')" class="px-2.5 py-0.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition text-xs shadow flex items-center gap-1">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login Gate
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('public')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center text-white font-black text-xl shadow-md">
+                        J
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-indigo-200 to-emerald-400 bg-clip-text text-transparent">JEE Society</span>
+                        <span class="block text-[10px] text-indigo-300 font-medium tracking-widest uppercase">IITian Mentorship Network</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Links (Public) -->
+                <nav id="public-nav-links" class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-300">
+                    <a href="#about" class="hover:text-emerald-400 transition">What We Do</a>
+                    <a href="#mentors" class="hover:text-emerald-400 transition">Our Mentors</a>
+                    <a href="#fee-structure" class="hover:text-emerald-400 transition">Fee Structure</a>
+                    <a href="#reviews" class="hover:text-emerald-400 transition">Student Reviews</a>
+                    <a href="#login-section" class="text-emerald-400 hover:text-emerald-300 transition font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-lock text-xs"></i> Portal Login
+                    </a>
+                </nav>
+
+                <!-- Header CTA & Login Button -->
+                <div class="flex items-center gap-3">
+                    <!-- Login Button (shown when logged out) -->
+                    <button onclick="openLoginModal()" id="header-login-btn" class="border border-slate-700 hover:border-emerald-500 bg-slate-800/80 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold px-3.5 py-2 rounded-lg shadow-sm transition text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket text-emerald-400 text-xs"></i>
+                        <span>Login</span>
+                    </button>
+
+                    <!-- User Session Pill (shown when logged in) -->
+                    <div id="user-session-pill" class="hidden items-center gap-2 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs shadow">
+                        <span id="session-role-badge" class="px-2 py-0.5 rounded text-[10px] font-bold"></span>
+                        <span id="session-user-name" class="font-semibold text-white"></span>
+                        <button onclick="handleLogout()" class="text-slate-400 hover:text-rose-400 ml-1 transition" title="Log Out">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        </button>
+                    </div>
+
+                    <button onclick="openApplyModal()" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition transform active:scale-95 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane text-xs"></i> Apply Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ANNOUNCEMENT BANNER -->
+    <div id="announcement-banner" class="bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 text-white text-xs py-2 px-4 text-center font-medium shadow-inner flex items-center justify-center gap-2">
+        <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Announcement</span>
+        <span id="announcement-text">🎯 Admissions open for JEE 2027 & 2028 Batches! Limited seats per IITian mentor. Apply now to secure your slot.</span>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow">
+
+        <!-- ========================================== -->
+        <!-- VIEW 1: PUBLIC LANDING PAGE WEBSITE       -->
+        <!-- ========================================== -->
+        <div id="view-public" class="space-y-16 pb-20">
+
+            <!-- Hero Section -->
+            <section class="relative bg-slate-900 text-white pt-12 pb-20 overflow-hidden">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="grid lg:grid-cols-12 gap-12 items-center">
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
+                                <i class="fa-solid fa-star text-amber-400"></i> India's premier 1-on-1 IITian mentorship community
+                            </div>
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                                Crack <span class="bg-gradient-to-r from-indigo-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">JEE Main & Advanced</span> with Dedicated IITian Mentors.
+                            </h1>
+                            <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                                Personalized strategy, daily target tracking, test analysis, and direct 1-on-1 guidance from top rankers studying in IIT Bombay, IIT Delhi, and IIT Madras.
+                            </p>
+                            <div class="flex flex-wrap gap-4 pt-2">
+                                <button onclick="openApplyModal()" class="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 font-bold text-white shadow-lg shadow-emerald-500/30 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                                    Apply & Deposit Fee <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </button>
+                                <a href="#mentors" class="px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold border border-slate-700 transition flex items-center gap-2">
+                                    <i class="fa-solid fa-users text-indigo-400"></i> View Mentors List
+                                </a>
+                            </div>
+
+                            <!-- Highlights Grid -->
+                            <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800">
+                                <div>
+                                    <p class="text-2xl font-black text-white">2,400+</p>
+                                    <p class="text-xs text-slate-400">Students Mentored</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-black text-emerald-400">98.2%</p>
+                                    <p class="text-xs text-slate-400">JEE Selection Rate</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-black text-amber-400">4.92 / 5</p>
+                                    <p class="text-xs text-slate-400">Mentee Satisfaction</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card preview / Quick CTA -->
+                        <div class="lg:col-span-5">
+                            <div class="bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700/80 rounded-2xl p-6 shadow-2xl space-y-5">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Live Mentorship Batch</span>
+                                    <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-medium">Seats Filling Fast</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-white">Join the JEE Society Mentorship Network</h3>
+                                <ul class="space-y-3 text-xs text-slate-300">
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+                                        <span><strong>1-on-1 Weekly Video Calls</strong> with your assigned IITian mentor</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+                                        <span><strong>Personalized Daily & Weekly Target Schedules</strong> tuned to your prep level</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+                                        <span><strong>Mock Test Deep Dive Analysis</strong> & customized mistake-book maintenance</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+                                        <span><strong>24/7 WhatsApp Doubt & Motivation Support</strong> directly with your mentor</span>
+                                    </li>
+                                </ul>
+
+                                <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-700/50 space-y-2">
+                                    <div class="flex justify-between text-xs text-slate-300">
+                                        <span>Starting Fee:</span>
+                                        <span class="font-bold text-emerald-400">₹1,999 / Month</span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-400">Instant mentor allocation upon fee deposit & confirmation.</div>
+                                </div>
+
+                                <button onclick="openApplyModal()" class="w-full py-3 bg-gradient-to-r from-indigo-500 to-emerald-500 hover:from-indigo-600 hover:to-emerald-600 text-white font-bold rounded-xl shadow-md transition text-sm">
+                                    Get Started Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What We Do Section -->
+            <section id="about" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto space-y-3">
+                    <span class="text-xs font-bold tracking-widest text-indigo-600 uppercase">Program Pillars</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900">What We Do Through This Program</h2>
+                    <p class="text-slate-600 text-sm">Our structured 4-step framework ensures top performance without burnout.</p>
+                </div>
+
+                <div class="grid md:grid-cols-4 gap-6 mt-12">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xl mb-4">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2">1. Personalized Roadmap</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">Custom preparation timetable matching your coaching schedule, weak chapters, and target exam year.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xl mb-4">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2">2. Daily Target & Check-ins</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">Daily target assignment and accountability tracking so you never waste a single day during preparation.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xl mb-4">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2">3. Test Score Diagnostics</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">Deep analysis of test papers to identify silly errors, time management flaws, and negative marking patterns.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xl mb-4">
+                            <i class="fa-solid fa-comments text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2">4. 1-on-1 Mentorship</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">Direct 1-on-1 regular calls with your mentor for doubt strategy, stress management, and exam temperament.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mentor List Section -->
+            <section id="mentors" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                    <div>
+                        <span class="text-xs font-bold tracking-widest text-indigo-600 uppercase">Verified Guides</span>
+                        <h2 class="text-3xl font-extrabold text-slate-900">Our Panel of IITian Mentors</h2>
+                        <p class="text-slate-600 text-sm">Select your preferred mentor or let the Admin allocate the best match for you.</p>
+                    </div>
+
+                    <!-- Search, Filter & Add Mentor Controls -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <div class="relative">
+                            <input type="text" id="mentor-search" oninput="filterMentors()" placeholder="Search mentor, branch, college..." class="pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-xs w-56 sm:w-64 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                        </div>
+                        <select id="college-filter" onchange="filterMentors()" class="border border-slate-300 rounded-lg text-xs px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <option value="ALL">All Institutes</option>
+                            <option value="IIT Bombay">IIT Bombay</option>
+                            <option value="IIT Delhi">IIT Delhi</option>
+                            <option value="IIT Madras">IIT Madras</option>
+                            <option value="IIT Kanpur">IIT Kanpur</option>
+                            <option value="IIT Kharagpur">IIT Kharagpur</option>
+                            <option value="IIT Roorkee">IIT Roorkee</option>
+                        </select>
+                        <button onclick="openAddMentorModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>Add New Mentor</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mentor Grid Dynamic Container -->
+                <div id="mentors-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Rendered dynamically by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Fee Structure Section -->
+            <section id="fee-structure" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-xl">
+                <div class="text-center max-w-3xl mx-auto space-y-3 mb-12">
+                    <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase">Transparent Pricing</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold">Mentorship Fee Structure</h2>
+                    <p class="text-slate-400 text-sm">Simple, no-hidden-cost plans designed to give you maximum value and rank improvement.</p>
+                </div>
+
+                <div id="fee-cards-container" class="grid md:grid-cols-3 gap-8">
+                    <!-- Rendered dynamically from JS data -->
+                </div>
+            </section>
+
+            <!-- Mentee Reviews Showcase -->
+            <section id="reviews" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-slate-100 rounded-3xl p-8 sm:p-10 border border-slate-200">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                        <div>
+                            <span class="text-xs font-bold tracking-widest text-indigo-600 uppercase">Verified Feedback</span>
+                            <h2 class="text-2xl font-extrabold text-slate-900">What Mentees Say About Their Mentors</h2>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-slate-200 text-xs shadow-sm">
+                            <i class="fa-solid fa-star text-amber-400"></i>
+                            <span class="font-bold text-slate-800">4.9 / 5.0 Rating</span>
+                            <span class="text-slate-400">(250+ On-site Reviews)</span>
+                        </div>
+                    </div>
+
+                    <div id="public-reviews-list" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        <!-- Dynamically populated from feedback state -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION: UNIFIED PORTAL LOGIN GATEWAY      -->
+            <!-- (Mentee Login, Mentor Login, Admin Login)  -->
+            <!-- ========================================== -->
+            <section id="login-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+                <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-12 text-white shadow-2xl border border-slate-800 space-y-10">
+                    
+                    <!-- Section Header -->
+                    <div class="text-center max-w-3xl mx-auto space-y-3">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold uppercase tracking-wider">
+                            <i class="fa-solid fa-lock text-xs"></i> Portal Authentication
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                            Sign In to Your <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-300 bg-clip-text text-transparent">JEE Society Portal</span>
+                        </h2>
+                        <p class="text-slate-300 text-sm">
+                            Access your dedicated dashboard tailored for JEE Aspirants (Mentees), IITian Mentors, or Platform Administrators.
+                        </p>
+                    </div>
+
+                    <!-- 3 Role Selector Tabs Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                        <!-- Mentee Tab Card -->
+                        <button type="button" onclick="switchLoginSectionTab('mentee')" id="sec-tab-btn-mentee" 
+                                class="login-sec-tab p-5 rounded-2xl border-2 transition-all text-left flex items-start gap-4 bg-emerald-950/40 border-emerald-500 shadow-lg shadow-emerald-900/30">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xl flex-shrink-0">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-extrabold text-base text-white">Mentee Login</h3>
+                                    <span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">Student</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1">Daily targets, score diagnostics, test roadmap & mentor WhatsApp.</p>
+                            </div>
+                        </button>
+
+                        <!-- Mentor Tab Card -->
+                        <button type="button" onclick="switchLoginSectionTab('mentor')" id="sec-tab-btn-mentor" 
+                                class="login-sec-tab p-5 rounded-2xl border-2 transition-all text-left flex items-start gap-4 bg-slate-800/50 border-slate-700/80 hover:border-indigo-500/60">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-400 flex items-center justify-center text-xl flex-shrink-0">
+                                <i class="fa-solid fa-chalkboard-user"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-extrabold text-base text-white">Mentor Login</h3>
+                                    <span class="bg-indigo-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase">IITian</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1">Manage mentees, assign homework checklists & log review calls.</p>
+                            </div>
+                        </button>
+
+                        <!-- Admin Tab Card -->
+                        <button type="button" onclick="switchLoginSectionTab('admin')" id="sec-tab-btn-admin" 
+                                class="login-sec-tab p-5 rounded-2xl border-2 transition-all text-left flex items-start gap-4 bg-slate-800/50 border-slate-700/80 hover:border-amber-500/60">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-xl flex-shrink-0">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-extrabold text-base text-white">Admin Login</h3>
+                                    <span class="bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">Operations</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1">Allocation control, fee deposits, mentor onboarding & broadcasts.</p>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Tab Content Forms Container -->
+                    <div class="max-w-xl mx-auto bg-slate-900/90 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
+                        
+                        <!-- ================= MENTEE LOGIN FORM ================= -->
+                        <div id="sec-login-form-mentee" class="space-y-5">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span class="font-bold text-sm text-emerald-300">Mentee Student Sign In</span>
+                                </div>
+                                <span class="text-[11px] text-slate-400">Class 11, 12 & Droppers</span>
+                            </div>
+
+                            <form onsubmit="handleFormLogin(event, 'mentee')" class="space-y-4 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1.5">Registered WhatsApp Number or Student ID *</label>
+                                    <div class="relative">
+                                        <input type="text" id="sec-mentee-phone" required placeholder="Enter registered phone or ID (e.g. +91 98765 43210)"
+                                               class="w-full pl-9 pr-3 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                        <i class="fa-solid fa-mobile-screen absolute left-3 top-3 text-slate-400"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between items-center mb-1.5">
+                                        <label class="font-bold text-slate-300">Password / Access PIN *</label>
+                                        <a href="javascript:alert('Password reset link has been dispatched to your registered WhatsApp number!')" class="text-[11px] text-emerald-400 hover:underline">Forgot PIN?</a>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="password" id="sec-mentee-password" required placeholder="Enter your access PIN"
+                                               class="w-full pl-9 pr-3 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                        <i class="fa-solid fa-key absolute left-3 top-3 text-slate-400"></i>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1.5">Target Exam Year</label>
+                                        <select id="sec-mentee-target" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-emerald-500">
+                                            <option value="JEE 2027">JEE 2027 (Class 12)</option>
+                                            <option value="JEE 2028">JEE 2028 (Class 11)</option>
+                                            <option value="JEE 2026">JEE 2026 (Dropper)</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex items-center pt-5">
+                                        <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                                            <input type="checkbox" checked class="rounded text-emerald-500 bg-slate-800 border-slate-700">
+                                            <span>Remember me</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div id="sec-mentee-status-box" class="p-2.5 bg-slate-800/60 border border-slate-700 rounded-xl text-slate-400 text-xs">
+                                    <span id="sec-mentee-status-text">New mentee? Apply via "Apply Now" to get your Student ID.</span>
+                                </div>
+
+                                <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-user-graduate"></i>
+                                    <span>Sign In to Mentee Portal</span>
+                                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </button>
+                            </form>
+
+                            <div class="pt-2 text-center text-xs text-slate-400 border-t border-slate-800">
+                                Don't have an assigned mentor? 
+                                <button onclick="openApplyModal()" class="text-emerald-400 hover:underline font-bold ml-1">Apply & Deposit Fee</button>
+                            </div>
+                        </div>
+
+                        <!-- ================= MENTOR LOGIN FORM ================= -->
+                        <div id="sec-login-form-mentor" class="hidden space-y-5">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                                    <span class="font-bold text-sm text-indigo-300">IITian Mentor Sign In</span>
+                                </div>
+                                <span class="text-[11px] text-slate-400">Verified IIT Faculty / Rankers</span>
+                            </div>
+
+                            <form onsubmit="handleFormLogin(event, 'mentor')" class="space-y-4 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1.5">Institute Email / Mentor ID *</label>
+                                    <div class="relative">
+                                        <input type="email" id="sec-mentor-email" required placeholder="mentor@iitb.ac.in"
+                                               class="w-full pl-9 pr-3 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                        <i class="fa-solid fa-envelope absolute left-3 top-3 text-slate-400"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between items-center mb-1.5">
+                                        <label class="font-bold text-slate-300">Mentor Password *</label>
+                                        <a href="javascript:alert('Password reset link sent to your institute webmail!')" class="text-[11px] text-indigo-400 hover:underline">Forgot Password?</a>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="password" id="sec-mentor-password" required placeholder="Enter mentor password"
+                                               class="w-full pl-9 pr-3 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                        <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-400"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1.5">Select Mentor Account Profile</label>
+                                    <select id="sec-mentor-profile-select" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500">
+                                        <!-- populated dynamically by JS from state.mentors -->
+                                    </select>
+                                </div>
+
+                                <div id="sec-mentor-status-box" class="p-2.5 bg-slate-800/60 border border-slate-700 rounded-xl text-slate-400 text-xs">
+                                    <span id="sec-mentor-status-text">Select your mentor profile to sign in.</span>
+                                </div>
+
+                                <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-extrabold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-chalkboard-user"></i>
+                                    <span>Sign In to Mentor Portal</span>
+                                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </button>
+                            </form>
+
+                            <div class="pt-2 text-center text-xs text-slate-400 border-t border-slate-800">
+                                Want to join our mentor network? 
+                                <span class="text-indigo-400 font-bold">Contact Admin with your JEE Rank & IIT ID</span>
+                            </div>
+                        </div>
+
+                        <!-- ================= ADMIN LOGIN FORM ================= -->
+                        <div id="sec-login-form-admin" class="hidden space-y-5">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                                    <span class="font-bold text-sm text-amber-300">Administrator Sign In</span>
+                                </div>
+                                <span class="text-[11px] text-slate-400">Master Operations Console</span>
+                            </div>
+
+                            <form onsubmit="handleFormLogin(event, 'admin')" class="space-y-4 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1.5">Admin Email / Username *</label>
+                                    <div class="relative">
+                                        <input type="text" id="sec-admin-user" required placeholder="admin@jeesociety.com" value="admin@jeesociety.com"
+                                               class="w-full pl-9 pr-3 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                                        <i class="fa-solid fa-user-shield absolute left-3 top-3 text-slate-400"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between items-center mb-1.5">
+                                        <label class="font-bold text-slate-300">Master Password *</label>
+                                        <span class="text-[10px] text-amber-400 font-mono">256-Bit Encrypted</span>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="password" id="sec-admin-password" required placeholder="••••••••••••" value="adminmaster2026"
+                                               class="w-full pl-9 pr-3 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                                        <i class="fa-solid fa-shield-halved absolute left-3 top-3 text-slate-400"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1.5">Two-Factor Admin Security Passkey</label>
+                                    <div class="relative">
+                                        <input type="text" id="sec-admin-passkey" value="JEE-ADMIN-SECURE-2026" 
+                                               class="w-full pl-9 pr-3 py-2.5 bg-slate-800/90 border border-slate-700 rounded-xl text-amber-300 font-mono text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                                        <i class="fa-solid fa-fingerprint absolute left-3 top-3 text-slate-400"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Demo Auto-fill -->
+                                <button type="button" onclick="quickFillAndLogin('admin')" 
+                                        class="w-full py-2 bg-amber-950/60 border border-amber-500/40 hover:bg-amber-900/50 text-amber-300 rounded-xl font-semibold transition text-xs flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-bolt text-amber-400"></i> 1-Click Demo Login as Super Admin
+                                </button>
+
+                                <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-extrabold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-lock text-xs"></i>
+                                    <span>Authenticate & Enter Admin Console</span>
+                                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </button>
+                            </form>
+
+                            <div class="pt-2 text-center text-xs text-slate-400 border-t border-slate-800">
+                                <i class="fa-solid fa-shield text-amber-400 mr-1"></i> Authorized Administrators Only. All IP addresses monitored.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 2: ADMIN DASHBOARD                    -->
+        <!-- ========================================== -->
+        <div id="view-admin" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+                <div>
+                    <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-full uppercase">Admin Control Room</span>
+                    <h1 class="text-3xl font-extrabold text-slate-900 mt-1">JEE Society Admin Dashboard</h1>
+                    <p class="text-xs text-slate-500">Manage mentor allocations, track deposits, broadcast updates, and review mentee feedback.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="openBroadcastModal()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow flex items-center gap-2">
+                        <i class="fa-solid fa-bullhorn"></i> Update Announcement
+                    </button>
+                    <button onclick="openAddMentorModal()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Add New Mentor
+                    </button>
+                    <button onclick="handleLogout()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold shadow flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-arrow-right-from-bracket text-rose-400"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Key Stats Overview -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between text-slate-500 text-xs mb-2">
+                        <span>Total Mentees</span>
+                        <i class="fa-solid fa-user-graduate text-indigo-500"></i>
+                    </div>
+                    <p id="admin-stat-mentees" class="text-2xl font-black text-slate-900">0</p>
+                    <span class="text-[10px] text-emerald-600 font-semibold">Active Enrolled</span>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between text-slate-500 text-xs mb-2">
+                        <span>Active Mentors</span>
+                        <i class="fa-solid fa-chalkboard-user text-emerald-500"></i>
+                    </div>
+                    <p id="admin-stat-mentors" class="text-2xl font-black text-slate-900">0</p>
+                    <span class="text-[10px] text-slate-500 font-semibold">IITian Panel</span>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between text-slate-500 text-xs mb-2">
+                        <span>Total Fee Collected</span>
+                        <i class="fa-solid fa-indian-rupee-sign text-emerald-600"></i>
+                    </div>
+                    <p id="admin-stat-revenue" class="text-2xl font-black text-emerald-600">₹0</p>
+                    <span class="text-[10px] text-emerald-600 font-semibold">Deposited On-Site</span>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between text-slate-500 text-xs mb-2">
+                        <span>Pending Review Forms</span>
+                        <i class="fa-solid fa-clipboard-question text-amber-500"></i>
+                    </div>
+                    <p id="admin-stat-reviews" class="text-2xl font-black text-slate-900">0</p>
+                    <span class="text-[10px] text-indigo-600 font-semibold">Collected Reviews</span>
+                </div>
+            </div>
+
+            <!-- TAB SYSTEM FOR ADMIN -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="border-b border-slate-200 bg-slate-50 px-6 pt-4 flex gap-6 text-sm font-semibold">
+                    <button onclick="switchAdminTab('allocations')" id="tab-btn-allocations" class="admin-tab-btn pb-3 border-b-2 border-indigo-600 text-indigo-600">
+                        Mentor-Mentee Allocations
+                    </button>
+                    <button onclick="switchAdminTab('applications')" id="tab-btn-applications" class="admin-tab-btn pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                        Fee Deposits & Registrations
+                    </button>
+                    <button onclick="switchAdminTab('reviews')" id="tab-btn-reviews" class="admin-tab-btn pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                        Collected Reviews & Feedback
+                    </button>
+                    <button onclick="switchAdminTab('pricing')" id="tab-btn-pricing" class="admin-tab-btn pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                        Manage Fee Tiers
+                    </button>
+                </div>
+
+                <div class="p-6">
+                    <!-- Tab 1: Allocations -->
+                    <div id="admin-tab-allocations" class="admin-tab-content space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800 text-base">Mentors & Assigned Mentees List</h3>
+                            <p class="text-xs text-slate-500">Admin can re-assign mentees or adjust capacity.</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left text-slate-700">
+                                <thead class="bg-slate-100 text-slate-800 uppercase font-bold text-[11px]">
+                                    <tr>
+                                        <th class="p-3">Mentor Name</th>
+                                        <th class="p-3">College & Branch</th>
+                                        <th class="p-3">Active Mentees Count</th>
+                                        <th class="p-3">Assigned Mentee Names</th>
+                                        <th class="p-3 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-allocations-table-body" class="divide-y divide-slate-200">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Applications & Deposits -->
+                    <div id="admin-tab-applications" class="admin-tab-content hidden space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800 text-base">All Registered Mentees & Deposit Records</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded">Auto-verified Payments</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left text-slate-700">
+                                <thead class="bg-slate-100 text-slate-800 uppercase font-bold text-[11px]">
+                                    <tr>
+                                        <th class="p-3">Receipt #</th>
+                                        <th class="p-3">Mentee Name</th>
+                                        <th class="p-3">Phone & Target</th>
+                                        <th class="p-3">Plan Enrolled</th>
+                                        <th class="p-3">Fee Amount</th>
+                                        <th class="p-3">Assigned Mentor</th>
+                                        <th class="p-3">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-applications-table-body" class="divide-y divide-slate-200">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Reviews -->
+                    <div id="admin-tab-reviews" class="admin-tab-content hidden space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800 text-base">Reviews Collected from Mentees</h3>
+                            <button onclick="triggerReviewBroadcast()" class="px-3 py-1.5 bg-indigo-600 text-white rounded text-xs font-medium hover:bg-indigo-700">
+                                <i class="fa-solid fa-paper-plane mr-1"></i> Circulate Review Form Notification
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left text-slate-700">
+                                <thead class="bg-slate-100 text-slate-800 uppercase font-bold text-[11px]">
+                                    <tr>
+                                        <th class="p-3">Date</th>
+                                        <th class="p-3">Mentee</th>
+                                        <th class="p-3">Mentor Reviewed</th>
+                                        <th class="p-3">Rating</th>
+                                        <th class="p-3">Review Comment</th>
+                                        <th class="p-3 text-right">Visibility</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-reviews-table-body" class="divide-y divide-slate-200">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Fee Pricing Controls -->
+                    <div id="admin-tab-pricing" class="admin-tab-content hidden space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800 text-base">Update Mentorship Plans & Deposit Fees</h3>
+                        </div>
+                        <div id="admin-pricing-cards-edit" class="grid md:grid-cols-3 gap-4">
+                            <!-- Rendered dynamically for inline edit -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 3: MENTEE PORTAL                      -->
+        <!-- ========================================== -->
+        <div id="view-mentee" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 sm:p-8 text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Mentee Student Dashboard</span>
+                    <h1 class="text-3xl font-extrabold mt-2">Welcome Back, <span id="mentee-dash-name">Rahul Sharma</span>!</h1>
+                    <p class="text-emerald-100 text-xs mt-1">Target Exam: JEE Advanced 2027 | Plan: Premium 1-on-1 Mentorship</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="bg-white text-slate-900 px-5 py-3 rounded-2xl shadow-md text-xs font-semibold flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-extrabold text-lg">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-[10px]">Fee Status:</p>
+                            <p class="text-emerald-600 font-extrabold text-sm">₹2,999 Paid (Active)</p>
+                        </div>
+                    </div>
+                    <button onclick="handleLogout()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-3 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shadow" title="Logout of Mentee Portal">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8">
+                <!-- My Assigned Mentor Info -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-chalkboard-user text-indigo-600"></i> Your Assigned Mentor
+                        </h3>
+                        
+                        <div id="mentee-assigned-mentor-card" class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <div class="space-y-2 pt-2">
+                            <label class="text-xs font-bold text-slate-700">Quick Actions</label>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <a id="mentee-whatsapp-link" href="#" target="_blank" class="p-2.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg font-bold text-center hover:bg-emerald-100 transition flex items-center justify-center gap-1.5">
+                                    <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i> WhatsApp Mentor
+                                </a>
+                                <button onclick="alert('Video Call Request Sent to Mentor!')" class="p-2.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg font-bold hover:bg-indigo-100 transition flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-video text-indigo-600"></i> Book 1-on-1 Call
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mentee Submit Review & Feedback Form -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square text-amber-500"></i> Mentor Feedback & Review
+                            </h3>
+                            <span class="text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full">Visible to Admin</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Submit your feedback anytime. The Admin panel reviews every response to monitor mentor guidance quality.</p>
+
+                        <form onsubmit="handleMenteeReviewSubmit(event)" class="space-y-3 text-xs">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Your Name *</label>
+                                    <input type="text" id="review-mentee-name" required placeholder="Your full name" class="w-full p-2.5 border border-slate-300 rounded-xl bg-slate-50 font-medium">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Mentor Being Reviewed *</label>
+                                    <select id="review-mentor-select" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 font-medium">
+                                        <!-- Populated dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Rating *</label>
+                                    <select id="review-rating" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 font-bold text-amber-600">
+                                        <option value="5">⭐⭐⭐⭐⭐ (5/5) - Outstanding</option>
+                                        <option value="4">⭐⭐⭐⭐ (4/5) - Very Good</option>
+                                        <option value="3">⭐⭐⭐ (3/5) - Average</option>
+                                        <option value="2">⭐⭐ (2/5) - Needs Improvement</option>
+                                        <option value="1">⭐ (1/5) - Poor</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Feedback Category</label>
+                                    <select id="review-category" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500">
+                                        <option value="Study Strategy & Timetable">Study Strategy & Timetable</option>
+                                        <option value="Doubt Clearing & Numericals">Doubt Clearing & Numericals</option>
+                                        <option value="Daily Target Tracking">Daily Target Tracking</option>
+                                        <option value="Mock Test Analysis">Mock Test Analysis</option>
+                                        <option value="Motivation & Guidance">Motivation & Guidance</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">Detailed Feedback & Comments *</label>
+                                <textarea id="review-comment" rows="3" required placeholder="How is your mentor guiding you? Share suggestions, positive feedback, or areas for improvement..." class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 via-emerald-600 to-indigo-600 hover:opacity-95 text-white font-extrabold text-xs rounded-xl transition shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane text-xs"></i> Submit Feedback to Admin
+                            </button>
+                        </form>
+
+                        <!-- Previous Feedback Container -->
+                        <div class="pt-3 border-t border-slate-200 space-y-2">
+                            <h4 class="font-bold text-slate-800 text-xs">Your Previous Feedback Submissions:</h4>
+                            <div id="mentee-feedback-history" class="space-y-2 text-xs">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Targets & Progress Tracker -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-extrabold text-slate-900 text-base">Today's Assigned Prep Targets</h3>
+                                <p class="text-xs text-slate-500">Assigned by Mentor: Rahul Verma (IIT Bombay)</p>
+                            </div>
+                            <span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full">3 / 4 Completed</span>
+                        </div>
+
+                        <div id="mentee-targets-list" class="space-y-2.5 text-xs">
+                            <label class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 transition">
+                                <input type="checkbox" checked class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="line-through text-slate-400">Solve 30 PYQs from Physics - Rotational Motion</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 transition">
+                                <input type="checkbox" checked class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="line-through text-slate-400">Read Organic Chemistry - Reaction Mechanism Notes</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 transition">
+                                <input type="checkbox" checked class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="line-through text-slate-400">Complete 1 hr Definite Integration Revision</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 bg-amber-50/60 border border-amber-200 rounded-xl cursor-pointer hover:bg-amber-50 transition">
+                                <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="font-semibold text-slate-800">Analyze 1 Part-Test paper & enter mistakes in sheet</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Progress Analytics Chart -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-extrabold text-slate-900 text-base">Mock Test Progression (JEE Advanced)</h3>
+                        <div class="h-64">
+                            <canvas id="menteeProgressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 4: MENTOR PORTAL                      -->
+        <!-- ========================================== -->
+        <div id="view-mentor" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <span class="bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">IITian Mentor Dashboard</span>
+                    <h1 class="text-3xl font-extrabold mt-2">Mentor: Rahul Verma</h1>
+                    <p class="text-slate-300 text-xs mt-1">IIT Bombay (CSE) | AIR 112 | 4 Mentees Assigned</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="alert('Session logged successfully!')" class="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold shadow transition">
+                        <i class="fa-solid fa-plus mr-1"></i> Log Mentorship Session
+                    </button>
+                    <button onclick="handleLogout()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5" title="Logout of Mentor Portal">
+                        <i class="fa-solid fa-arrow-right-from-bracket text-rose-400"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Assigned Mentees Cards -->
+            <div class="space-y-4">
+                <h3 class="font-extrabold text-slate-900 text-lg">Your Mentees Roster</h3>
+                <div id="mentor-portal-mentees-grid" class="grid md:grid-cols-2 gap-6">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-800 pb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white font-extrabold text-base">J</div>
+                    <span class="text-base font-bold text-white tracking-tight">JEE Society Mentorship</span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="#about" class="hover:text-white">What We Do</a>
+                    <a href="#mentors" class="hover:text-white">Mentors</a>
+                    <a href="#fee-structure" class="hover:text-white">Fee Structure</a>
+                    <a href="#reviews" class="hover:text-white">Reviews</a>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-2 text-slate-500">
+                <p>© 2026 JEE Society Platform. Built for IIT JEE Aspirants.</p>
+                <p>Admin Control & Review System Integrated.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- UNIFIED LOGIN MODAL (ADMIN / MENTOR / MENTEE) -->
+    <!-- ========================================== -->
+    <div id="loginModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-4">
+                <div>
+                    <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-full uppercase">Secure Access Gateway</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Portal Login</h2>
+                </div>
+                <button onclick="closeLoginModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 font-bold transition">✕</button>
+            </div>
+
+            <!-- Role Tabs Inside Modal -->
+            <div class="grid grid-cols-3 gap-1 bg-slate-100 p-1.5 rounded-2xl text-xs font-bold text-center">
+                <button type="button" onclick="switchModalLoginTab('mentee')" id="modal-tab-btn-mentee" 
+                        class="py-2.5 rounded-xl border-2 border-emerald-500 text-emerald-700 bg-emerald-50 transition shadow-sm flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>Mentee</span>
+                </button>
+                <button type="button" onclick="switchModalLoginTab('mentor')" id="modal-tab-btn-mentor" 
+                        class="py-2.5 rounded-xl border-2 border-transparent text-slate-600 hover:text-indigo-600 transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Mentor</span>
+                </button>
+                <button type="button" onclick="switchModalLoginTab('admin')" id="modal-tab-btn-admin" 
+                        class="py-2.5 rounded-xl border-2 border-transparent text-slate-600 hover:text-amber-600 transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Admin</span>
+                </button>
+            </div>
+
+            <!-- MODAL FORM 1: MENTEE -->
+            <div id="modal-login-form-mentee" class="space-y-4">
+                <div class="bg-emerald-50/70 border border-emerald-100 rounded-2xl p-3 text-xs text-emerald-800 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-base text-emerald-600"></i>
+                    <div>
+                        <span class="font-bold">JEE Aspirant Portal</span>
+                        <p class="text-[11px] text-emerald-700">Access your daily schedule, roadmap & mentor chat.</p>
+                    </div>
+                </div>
+
+                <form onsubmit="handleFormLogin(event, 'mentee')" class="space-y-3.5 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">WhatsApp Mobile / Student ID *</label>
+                        <input type="text" id="modal-mentee-phone" required placeholder="Enter registered phone or ID"
+                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="font-bold text-slate-700">Password / Access PIN *</label>
+                            <a href="javascript:alert('Password reset link sent to your registered WhatsApp!')" class="text-[11px] text-emerald-600 hover:underline">Forgot?</a>
+                        </div>
+                        <input type="password" id="modal-mentee-pass" required placeholder="Enter your password"
+                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Target Exam Year</label>
+                        <select id="modal-mentee-target" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-500">
+                            <option value="JEE 2027">JEE 2027 (Class 12)</option>
+                            <option value="JEE 2028">JEE 2028 (Class 11)</option>
+                            <option value="JEE 2026">JEE 2026 (Dropper)</option>
+                        </select>
+                    </div>
+                    <div id="modal-mentee-status-box" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-[11px]">
+                        <span id="modal-mentee-status-text">Enter your registered WhatsApp or Student ID to login.</span>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <span>Sign In to Mentee Dashboard</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- MODAL FORM 2: MENTOR -->
+            <div id="modal-login-form-mentor" class="hidden space-y-4">
+                <div class="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-3 text-xs text-indigo-800 flex items-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user text-base text-indigo-600"></i>
+                    <div>
+                        <span class="font-bold">IITian Mentor Workspace</span>
+                        <p class="text-[11px] text-indigo-700">Guide mentees, track targets & schedule video calls.</p>
+                    </div>
+                </div>
+
+                <form onsubmit="handleFormLogin(event, 'mentor')" class="space-y-3.5 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Institute Webmail / Mentor ID *</label>
+                        <input type="email" id="modal-mentor-email" required placeholder="mentor@iitb.ac.in"
+                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="font-bold text-slate-700">Password *</label>
+                            <a href="javascript:alert('Password reset link sent to webmail!')" class="text-[11px] text-indigo-600 hover:underline">Forgot?</a>
+                        </div>
+                        <input type="password" id="modal-mentor-pass" required placeholder="Enter mentor password"
+                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Select Mentor Profile</label>
+                        <select id="modal-mentor-profile-select" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500">
+                            <!-- populated dynamically by JS -->
+                        </select>
+                    </div>
+                    <div id="modal-mentor-status-box" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-[11px]">
+                        <span id="modal-mentor-status-text">Select your mentor account above to sign in.</span>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-extrabold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        <span>Sign In to Mentor Portal</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- MODAL FORM 3: ADMIN -->
+            <div id="modal-login-form-admin" class="hidden space-y-4">
+                <div class="bg-amber-50/70 border border-amber-100 rounded-2xl p-3 text-xs text-amber-800 flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
+                    <div>
+                        <span class="font-bold">Administrator Operations</span>
+                        <p class="text-[11px] text-amber-700">Full control over allocations, fees & platform settings.</p>
+                    </div>
+                </div>
+
+                <form onsubmit="handleFormLogin(event, 'admin')" class="space-y-3.5 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Admin Username / Email *</label>
+                        <input type="text" id="modal-admin-user" required placeholder="admin@jeesociety.com" value="admin@jeesociety.com" 
+                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Master Password *</label>
+                        <input type="password" id="modal-admin-pass" required placeholder="••••••••••••" value="adminmaster2026" 
+                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Two-Factor Admin Security Passkey</label>
+                        <input type="text" id="modal-admin-key" value="JEE-ADMIN-SECURE-2026" 
+                               class="w-full p-2.5 border border-slate-300 rounded-xl bg-slate-50 font-mono text-xs focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <button type="button" onclick="quickFillAndLogin('admin')" 
+                            class="w-full py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold border border-amber-200 rounded-xl transition text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> 1-Click Demo Login (Super Admin)
+                    </button>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-extrabold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lock text-xs"></i>
+                        <span>Authenticate & Enter Admin Console</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- APPLICATION & FEE DEPOSIT MODAL           -->
+    <!-- ========================================== -->
+    <div id="applyModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-4">
+                <div>
+                    <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full uppercase">Step-by-Step Deposit Workflow</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">JEE Society Mentorship Application</h2>
+                </div>
+                <button onclick="closeApplyModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 font-bold">✕</button>
+            </div>
+
+            <!-- Form Content -->
+            <form id="application-form" onsubmit="handleFeeDepositSubmit(event)" class="space-y-4 text-xs">
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Student Full Name *</label>
+                        <input type="text" id="app-name" required placeholder="e.g. Rahul Sharma" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Phone Number (WhatsApp) *</label>
+                        <input type="tel" id="app-phone" required placeholder="+91 98765 43210" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Current Class / Dropper *</label>
+                        <select id="app-class" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-500">
+                            <option value="Class 11">Class 11 Aspirant</option>
+                            <option value="Class 12">Class 12 Aspirant</option>
+                            <option value="Dropper / Repeater">Dropper / Repeater</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Target Exam Year *</label>
+                        <select id="app-target" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-500">
+                            <option value="JEE 2027">JEE 2027</option>
+                            <option value="JEE 2028">JEE 2028</option>
+                            <option value="JEE 2026">JEE 2026</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Select Mentorship Plan *</label>
+                        <select id="app-plan" onchange="updateDepositAmount()" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-500">
+                            <option value="Monthly Boost Plan|1999">Monthly Boost Plan (₹1,999/mo)</option>
+                            <option value="Full Academic Mentorship|2999" selected>Full Academic Mentorship (₹2,999/mo)</option>
+                            <option value="JEE Advanced Top Rankers|4999">JEE Advanced Top Rankers (₹4,999/mo)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Preferred Mentor (Optional)</label>
+                        <select id="app-mentor" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-500">
+                            <option value="AUTO">Auto-Allocate Best IITian Match (Recommended)</option>
+                            <!-- Mentor options rendered dynamically -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Simulated Payment Section -->
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-slate-800">Deposit Fee Summary</span>
+                        <span id="app-payable-amount" class="text-base font-black text-emerald-600">₹2,999</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block font-bold text-slate-700">Choose Deposit Payment Mode</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="border border-slate-300 p-2 rounded-xl text-center cursor-pointer hover:border-emerald-500 flex flex-col items-center gap-1">
+                                <input type="radio" name="pay-mode" value="UPI QR" checked class="text-emerald-600">
+                                <i class="fa-solid fa-qrcode text-base text-indigo-600"></i>
+                                <span class="text-[10px] font-bold">UPI QR</span>
+                            </label>
+                            <label class="border border-slate-300 p-2 rounded-xl text-center cursor-pointer hover:border-emerald-500 flex flex-col items-center gap-1">
+                                <input type="radio" name="pay-mode" value="Card" class="text-emerald-600">
+                                <i class="fa-solid fa-credit-card text-base text-emerald-600"></i>
+                                <span class="text-[10px] font-bold">Debit/Credit</span>
+                            </label>
+                            <label class="border border-slate-300 p-2 rounded-xl text-center cursor-pointer hover:border-emerald-500 flex flex-col items-center gap-1">
+                                <input type="radio" name="pay-mode" value="NetBanking" class="text-emerald-600">
+                                <i class="fa-solid fa-building-columns text-base text-amber-600"></i>
+                                <span class="text-[10px] font-bold">NetBanking</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm rounded-xl shadow-lg transition">
+                    Deposit Fee & Activate Mentorship
+                </button>
+            </form>
+
+            <!-- Payment Confirmation Receipt View (Hidden Initially) -->
+            <div id="receipt-success-container" class="hidden text-center space-y-4 py-4">
+                <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl font-extrabold">
+                    ✓
+                </div>
+                <div>
+                    <h3 class="text-xl font-extrabold text-slate-900">Fee Deposit Successful!</h3>
+                    <p class="text-xs text-slate-500">Your mentorship receipt has been generated and seat confirmed.</p>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs text-left space-y-2">
+                    <div class="flex justify-between border-b pb-1">
+                        <span class="text-slate-500">Receipt ID:</span>
+                        <span id="rec-id" class="font-bold text-slate-800">#JEE-REC-9821</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1">
+                        <span class="text-slate-500">Student Name:</span>
+                        <span id="rec-name" class="font-bold text-slate-800">-</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1">
+                        <span class="text-slate-500">Amount Deposited:</span>
+                        <span id="rec-amount" class="font-bold text-emerald-600">-</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1">
+                        <span class="text-slate-500">Assigned Mentor:</span>
+                        <span id="rec-mentor" class="font-bold text-indigo-600">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Date:</span>
+                        <span id="rec-date" class="font-bold text-slate-800">-</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="window.print()" class="w-1/2 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-xl transition">
+                        <i class="fa-solid fa-print mr-1"></i> Print Receipt
+                    </button>
+                    <button onclick="switchView('mentee'); closeApplyModal();" class="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition">
+                        Go to Mentee Portal <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD NEW MENTOR -->
+    <div id="addMentorModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 text-base leading-tight">Add New IITian Mentor</h3>
+                        <p class="text-[11px] text-slate-500">Will be added directly to the Mentor List & platform database</p>
+                    </div>
+                </div>
+                <button onclick="closeAddMentorModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 hover:text-slate-600 font-bold flex items-center justify-center transition">✕</button>
+            </div>
+            <form onsubmit="handleCreateMentorSubmit(event)" class="space-y-3.5 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Mentor Full Name *</label>
+                    <input type="text" id="new-mentor-name" required placeholder="e.g. Aman Verma" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Institute / College *</label>
+                        <select id="new-mentor-college" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <option value="IIT Bombay">IIT Bombay</option>
+                            <option value="IIT Delhi">IIT Delhi</option>
+                            <option value="IIT Madras">IIT Madras</option>
+                            <option value="IIT Kanpur">IIT Kanpur</option>
+                            <option value="IIT Kharagpur">IIT Kharagpur</option>
+                            <option value="IIT Roorkee">IIT Roorkee</option>
+                            <option value="IIT Guwahati">IIT Guwahati</option>
+                            <option value="IIT BHU">IIT BHU (Varanasi)</option>
+                            <option value="IIT Hyderabad">IIT Hyderabad</option>
+                            <option value="BITS Pilani">BITS Pilani</option>
+                            <option value="Other Premier IIT">Other Premier IIT</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">JEE AIR Rank *</label>
+                        <input type="text" id="new-mentor-rank" required placeholder="e.g. AIR 184" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Branch / Major *</label>
+                        <input type="text" id="new-mentor-branch" required placeholder="e.g. Computer Science" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">WhatsApp Number *</label>
+                        <input type="text" id="new-mentor-whatsapp" required placeholder="e.g. +91 98765 43210" value="+91 98765 43210" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Max Student Capacity</label>
+                        <input type="number" id="new-mentor-capacity" min="1" max="25" value="5" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Initial Rating</label>
+                        <input type="number" step="0.1" id="new-mentor-rating" min="1" max="5" value="5.0" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Short Bio & Mentorship Strategy</label>
+                    <textarea id="new-mentor-bio" rows="2" placeholder="e.g. Specializes in Physics mechanics, advanced calculus, and reducing negative marks." class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                </div>
+                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    <span>Add Mentor to Mentor List</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: BROADCAST ANNOUNCEMENT (ADMIN ONLY) -->
+    <div id="broadcastModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-extrabold text-slate-900 text-lg">Update Announcement Bar</h3>
+                <button onclick="closeBroadcastModal()" class="text-slate-400 font-bold">✕</button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Announcement Message</label>
+                    <textarea id="broadcast-input-text" rows="3" class="w-full p-2.5 border rounded-xl">🎯 Admissions open for JEE 2027 & 2028 Batches! Limited seats per IITian mentor. Apply now to secure your slot.</textarea>
+                </div>
+                <button onclick="saveAnnouncement()" class="w-full py-3 bg-indigo-600 text-white font-bold text-xs rounded-xl">
+                    Publish Announcement to Website
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT STATE & APPLICATION LOGIC -->
+    <script>
+        // Storage persistence & initial empty reset
+        if (!localStorage.getItem('jee_v4_clean_slate')) {
+            localStorage.setItem('jee_mentors', JSON.stringify([]));
+            localStorage.setItem('jee_mentees', JSON.stringify([]));
+            localStorage.setItem('jee_reviews', JSON.stringify([]));
+            localStorage.setItem('jee_v4_clean_slate', 'true');
+        }
+
+        // Helper to persist state to localStorage
+        function saveToStorage() {
+            try {
+                localStorage.setItem('jee_mentors', JSON.stringify(state.mentors));
+                localStorage.setItem('jee_mentees', JSON.stringify(state.mentees));
+                localStorage.setItem('jee_reviews', JSON.stringify(state.reviews));
+            } catch(e) {
+                console.warn('Storage save failed:', e);
+            }
+        }
+
+        // GLOBAL DATA STATE (Clean slate: No hardcoded mentors, mentees, or reviews)
+        let state = {
+            activeView: 'public',
+            currentUser: null,
+            mentors: JSON.parse(localStorage.getItem('jee_mentors') || '[]'),
+            mentees: JSON.parse(localStorage.getItem('jee_mentees') || '[]'),
+            reviews: JSON.parse(localStorage.getItem('jee_reviews') || '[]'),
+            plans: [
+                {
+                    id: 'monthly',
+                    name: 'Monthly Boost Plan',
+                    fee: 1999,
+                    period: 'per month',
+                    popular: false,
+                    features: [
+                        '2x Video Calls per month',
+                        'Weekly Target Checklist',
+                        'WhatsApp Group Access',
+                        'Basic Test Analysis'
+                    ]
+                },
+                {
+                    id: 'academic',
+                    name: 'Full Academic Mentorship',
+                    fee: 2999,
+                    period: 'per month',
+                    popular: true,
+                    features: [
+                        '4x Weekly 1-on-1 Video Calls',
+                        'Customized Daily Schedule',
+                        'Direct Mentor WhatsApp Access',
+                        'In-depth Test Mistake Diagnostics',
+                        'Monthly Admin Progress Review'
+                    ]
+                },
+                {
+                    id: 'adv_rankers',
+                    name: 'JEE Advanced Top Rankers',
+                    fee: 4999,
+                    period: 'per month',
+                    popular: false,
+                    features: [
+                        'Unlimited 1-on-1 Video Syncs',
+                        'Top 500 Ranker Exclusive Notes',
+                        '24/7 Priority Call Access',
+                        'Full JEE Advanced Test Diagnostics',
+                        'Direct Advice from IIT Bombay Mentors'
+                    ]
+                }
+            ]
+        };
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPublicMentors();
+            renderFeeStructure();
+            renderPublicReviews();
+            renderAdminDashboard();
+            renderMenteePortal();
+            renderMentorPortal();
+            populateMentorDropdowns();
+            initChart();
+            updateSessionUI();
+        });
+
+        // VIEW SWITCHING
+        function switchView(viewName) {
+            state.activeView = viewName;
+            
+            // Hide all views
+            ['public', 'admin', 'mentee', 'mentor'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+                document.getElementById(`btn-view-${v}`).classList.remove('bg-indigo-600', 'text-white');
+                document.getElementById(`btn-view-${v}`).classList.add('bg-slate-800', 'text-indigo-200');
+            });
+
+            // Show selected view
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-view-${viewName}`);
+            activeBtn.classList.add('bg-indigo-600', 'text-white');
+            activeBtn.classList.remove('bg-slate-800', 'text-indigo-200');
+
+            // Scroll top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // RENDER MENTORS GRID (PUBLIC)
+        function renderPublicMentors() {
+            const grid = document.getElementById('mentors-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            // Dynamically populate college filter with unique colleges from current mentors
+            const collegeSelect = document.getElementById('college-filter');
+            if (collegeSelect) {
+                const currentVal = collegeSelect.value || 'ALL';
+                const defaultColleges = ['IIT Bombay', 'IIT Delhi', 'IIT Madras', 'IIT Kanpur', 'IIT Kharagpur', 'IIT Roorkee', 'IIT Guwahati', 'IIT BHU', 'IIT Hyderabad', 'BITS Pilani'];
+                const dynamicColleges = Array.from(new Set([...defaultColleges, ...state.mentors.map(m => m.college).filter(Boolean)]));
+                collegeSelect.innerHTML = '<option value="ALL">All Institutes</option>' + 
+                    dynamicColleges.map(c => `<option value="${c}" ${c === currentVal ? 'selected' : ''}>${c}</option>`).join('');
+            }
+
+            if (state.mentors.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white border-2 border-dashed border-slate-300 rounded-3xl p-10 sm:p-14 text-center space-y-4 shadow-sm">
+                        <div class="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-600 mx-auto flex items-center justify-center text-2xl shadow-inner">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-800">No Mentors in Mentor List Yet</h3>
+                            <p class="text-xs text-slate-500 max-w-md mx-auto mt-1">
+                                Add your first verified IITian mentor now. They will immediately appear in this list, in the Admin dashboard, and in student allocation forms.
+                            </p>
+                        </div>
+                        <button onclick="openAddMentorModal()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-md inline-flex items-center gap-2">
+                            <i class="fa-solid fa-user-plus"></i> Add New Mentor to List
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            state.mentors.forEach(m => {
+                grid.appendChild(createMentorCardElement(m));
+            });
+        }
+
+        function createMentorCardElement(m) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-xl transition space-y-4 flex flex-col justify-between';
+            const initials = m.name ? m.name.trim().split(/\s+/).map(n=>n[0]).join('').substring(0, 2).toUpperCase() : 'M';
+            card.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-extrabold flex items-center justify-center text-base shadow">
+                                ${initials}
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-base leading-tight">${m.name}</h3>
+                                <p class="text-xs text-indigo-600 font-bold">${m.college}</p>
+                            </div>
+                        </div>
+                        <span class="bg-amber-100 text-amber-800 font-extrabold text-[11px] px-2.5 py-1 rounded-full border border-amber-200">
+                            ${m.rank}
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-slate-500 font-medium">${m.branch}</p>
+                    <p class="text-xs text-slate-600 leading-relaxed">${m.bio || 'IITian Mentor guiding JEE aspirants.'}</p>
+
+                    <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+                        <div class="flex items-center gap-1 text-amber-500 font-bold">
+                            <i class="fa-solid fa-star"></i>
+                            <span>${m.rating || 5.0}</span>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-slate-700">${m.menteesCount || 0} / ${m.maxCapacity || 5}</span> Mentees
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row gap-2">
+                    <button onclick="openApplyModal('${m.id}')" class="w-full py-2.5 bg-slate-900 hover:bg-emerald-600 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-check-circle text-emerald-400"></i> Select as Mentor & Apply
+                    </button>
+                </div>
+            `;
+            return card;
+        }
+
+        // FILTER MENTORS
+        function filterMentors() {
+            const query = (document.getElementById('mentor-search')?.value || '').toLowerCase();
+            const college = document.getElementById('college-filter')?.value || 'ALL';
+
+            const filtered = state.mentors.filter(m => {
+                const matchesQuery = (m.name || '').toLowerCase().includes(query) || 
+                                     (m.college || '').toLowerCase().includes(query) || 
+                                     (m.branch || '').toLowerCase().includes(query) ||
+                                     (m.rank || '').toLowerCase().includes(query);
+                const matchesCollege = (college === 'ALL') || (m.college === college);
+                return matchesQuery && matchesCollege;
+            });
+
+            const grid = document.getElementById('mentors-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-3 text-center py-10 text-slate-400 text-xs">No mentors found matching your filter criteria.</div>`;
+                return;
+            }
+
+            filtered.forEach(m => {
+                grid.appendChild(createMentorCardElement(m));
+            });
+        }
+
+        // RENDER FEE STRUCTURE (PUBLIC)
+        function renderFeeStructure() {
+            const container = document.getElementById('fee-cards-container');
+            container.innerHTML = '';
+
+            state.plans.forEach(plan => {
+                const card = document.createElement('div');
+                card.className = `rounded-2xl p-6 ${plan.popular ? 'bg-gradient-to-b from-indigo-950 to-slate-900 border-2 border-emerald-400 relative shadow-2xl scale-105' : 'bg-slate-800/80 border border-slate-700'} space-y-6 flex flex-col justify-between`;
+                
+                let badge = plan.popular ? `<span class="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-emerald-500 text-slate-950 font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-full shadow">Most Popular Choice</span>` : '';
+
+                card.innerHTML = `
+                    ${badge}
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">${plan.name}</h3>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span class="text-3xl font-black text-emerald-400">₹${plan.fee}</span>
+                                <span class="text-xs text-slate-400">/ ${plan.period}</span>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-3 text-xs text-slate-300 border-t border-slate-700/60 pt-4">
+                            ${plan.features.map(f => `<li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i> <span>${f}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <button onclick="openApplyModal('', '${plan.name}|${plan.fee}')" class="w-full py-3 rounded-xl font-bold text-xs transition shadow-md ${plan.popular ? 'bg-emerald-500 hover:bg-emerald-600 text-slate-950' : 'bg-slate-700 hover:bg-slate-600 text-white'}">
+                        Apply & Deposit ₹${plan.fee}
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // RENDER PUBLIC REVIEWS
+        function renderPublicReviews() {
+            const list = document.getElementById('public-reviews-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            const visibleReviews = state.reviews.filter(r => r.visible);
+            if (visibleReviews.length === 0) {
+                list.innerHTML = `
+                    <div class="col-span-full bg-white border border-dashed border-slate-300 rounded-2xl p-8 text-center space-y-2">
+                        <i class="fa-regular fa-comment-dots text-3xl text-slate-400"></i>
+                        <p class="text-sm font-bold text-slate-700">No Mentee Reviews Published Yet</p>
+                        <p class="text-xs text-slate-400">Reviews and feedback submitted by enrolled mentees will appear here after Admin verification.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            visibleReviews.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center">
+                                ${(r.menteeName || 'M')[0]}
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-xs">${r.menteeName}</h4>
+                                <p class="text-[10px] text-slate-400">For ${r.mentorName}</p>
+                            </div>
+                        </div>
+                        <div class="text-amber-400 text-xs">
+                            ${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 italic">"${r.comment}"</p>
+                    <p class="text-[10px] text-slate-400 text-right">${r.date}</p>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // RENDER ADMIN DASHBOARD (View Details for Mentees & Mentors)
+        function renderAdminDashboard() {
+            // Stats
+            document.getElementById('admin-stat-mentees').innerText = state.mentees.length;
+            document.getElementById('admin-stat-mentors').innerText = state.mentors.length;
+            const totalRev = state.mentees.reduce((acc, m) => acc + (m.feePaid || 0), 0);
+            document.getElementById('admin-stat-revenue').innerText = '₹' + totalRev.toLocaleString('en-IN');
+            document.getElementById('admin-stat-reviews').innerText = state.reviews.length;
+
+            // 1. Render Mentors List / Allocations Table
+            const allocTbody = document.getElementById('admin-allocations-table-body');
+            allocTbody.innerHTML = '';
+
+            if (state.mentors.length === 0) {
+                allocTbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="p-8 text-center text-slate-400 bg-slate-50/50">
+                            <i class="fa-solid fa-chalkboard-user text-2xl text-slate-300 mb-2 block"></i>
+                            <span class="font-bold text-slate-600">No mentors added yet.</span>
+                            <p class="text-xs text-slate-400 mt-1">Click <strong>"+ Add New Mentor"</strong> at the top to onboard your first IITian mentor.</p>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                state.mentors.forEach(m => {
+                    const assignedMenteesList = state.mentees.filter(mentee => mentee.assignedMentorId === m.id);
+                    const menteeNames = assignedMenteesList.map(mentee => `<span class="inline-block bg-indigo-50 border border-indigo-200 text-indigo-700 px-2 py-0.5 rounded text-[11px] font-semibold">${mentee.name}</span>`).join(' ') || '<span class="text-slate-400 italic">None Allocated</span>';
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 transition';
+                    tr.innerHTML = `
+                        <td class="p-3">
+                            <div class="font-bold text-slate-900">${m.name}</div>
+                            <div class="text-[11px] text-slate-500 font-mono">${m.whatsapp || 'No contact'}</div>
+                        </td>
+                        <td class="p-3">
+                            <span class="font-bold text-slate-800">${m.college}</span>
+                            <span class="block text-[11px] text-indigo-600 font-semibold">${m.rank} • ${m.branch}</span>
+                        </td>
+                        <td class="p-3">
+                            <span class="font-bold ${assignedMenteesList.length >= m.maxCapacity ? 'text-rose-600' : 'text-emerald-600'}">
+                                ${assignedMenteesList.length} / ${m.maxCapacity} Mentees
+                            </span>
+                        </td>
+                        <td class="p-3">${menteeNames}</td>
+                        <td class="p-3 text-right space-x-1">
+                            <button onclick="editMentorCapacity(${m.id})" class="text-xs bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded font-semibold text-slate-700 transition" title="Adjust Max Capacity">
+                                Capacity
+                            </button>
+                            <button onclick="deleteMentor(${m.id})" class="text-xs bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded font-semibold text-rose-700 transition" title="Remove Mentor">
+                                Delete
+                            </button>
+                        </td>
+                    `;
+                    allocTbody.appendChild(tr);
+                });
+            }
+
+            // 2. Render Applications & Registered Mentees Table
+            const appTbody = document.getElementById('admin-applications-table-body');
+            appTbody.innerHTML = '';
+
+            if (state.mentees.length === 0) {
+                appTbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-slate-400 bg-slate-50/50">
+                            <i class="fa-solid fa-user-graduate text-2xl text-slate-300 mb-2 block"></i>
+                            <span class="font-bold text-slate-600">No mentees registered yet.</span>
+                            <p class="text-xs text-slate-400 mt-1">When students apply and deposit fees via "Apply Now", their full details and mentor assignment controls will appear here.</p>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                state.mentees.forEach(m => {
+                    let mentorOptions = `<option value="" ${!m.assignedMentorId ? 'selected' : ''}>-- Unassigned (Needs Mentor) --</option>`;
+                    state.mentors.forEach(men => {
+                        mentorOptions += `<option value="${men.id}" ${m.assignedMentorId === men.id ? 'selected' : ''}>${men.name} (${men.college} - ${men.rank})</option>`;
+                    });
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 transition';
+                    tr.innerHTML = `
+                        <td class="p-3 font-mono text-indigo-600 font-bold">${m.id}</td>
+                        <td class="p-3">
+                            <div class="font-bold text-slate-900">${m.name}</div>
+                            <div class="text-[11px] text-slate-400">${m.date || 'Today'}</div>
+                        </td>
+                        <td class="p-3">
+                            <div>${m.phone}</div>
+                            <span class="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded text-[10px] font-semibold">${m.classLevel || 'Class 12'} • ${m.target}</span>
+                        </td>
+                        <td class="p-3 font-medium">${m.planName}</td>
+                        <td class="p-3 font-black text-emerald-600">₹${(m.feePaid || 0).toLocaleString('en-IN')}</td>
+                        <td class="p-3">
+                            <select onchange="reassignMenteeMentor('${m.id}', this.value)" class="text-xs border border-slate-300 rounded-lg p-1.5 bg-white font-medium focus:ring-2 focus:ring-indigo-500 max-w-[200px]">
+                                ${mentorOptions}
+                            </select>
+                        </td>
+                        <td class="p-3">
+                            <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]">${m.status || 'Active'}</span>
+                            <button onclick="deleteMentee('${m.id}')" class="ml-2 text-rose-600 hover:text-rose-800 text-xs" title="Delete Mentee"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    `;
+                    appTbody.appendChild(tr);
+                });
+            }
+
+            // 3. Render Reviews & Feedback Table
+            const revTbody = document.getElementById('admin-reviews-table-body');
+            revTbody.innerHTML = '';
+
+            if (state.reviews.length === 0) {
+                revTbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-slate-400 bg-slate-50/50">
+                            <i class="fa-regular fa-comment-dots text-2xl text-slate-300 mb-2 block"></i>
+                            <span class="font-bold text-slate-600">No reviews or feedback collected yet.</span>
+                            <p class="text-xs text-slate-400 mt-1">Mentees can submit feedback anytime from their Mentee Dashboard.</p>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                state.reviews.forEach(r => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 transition';
+                    tr.innerHTML = `
+                        <td class="p-3 text-slate-400 text-xs">${r.date}</td>
+                        <td class="p-3 font-bold text-slate-800">${r.menteeName}</td>
+                        <td class="p-3 font-medium text-indigo-600">${r.mentorName}</td>
+                        <td class="p-3 font-bold text-amber-500">${'★'.repeat(r.rating)} (${r.rating}/5)</td>
+                        <td class="p-3">
+                            <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded inline-block mb-1">${r.category || 'Feedback'}</span>
+                            <p class="text-slate-700 text-xs">${r.comment}</p>
+                        </td>
+                        <td class="p-3 text-right space-x-1">
+                            <button onclick="toggleReviewVisibility(${r.id})" class="px-2 py-1 text-[10px] font-bold rounded ${r.visible ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'} transition">
+                                ${r.visible ? 'Published' : 'Hidden'}
+                            </button>
+                            <button onclick="deleteReview(${r.id})" class="px-2 py-1 text-[10px] font-bold rounded bg-rose-50 text-rose-700 hover:bg-rose-100 transition">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    revTbody.appendChild(tr);
+                });
+            }
+        }
+
+        // TAB SWITCHING IN ADMIN
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('border-indigo-600', 'text-indigo-600');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+
+            const activeTabContent = document.getElementById(`admin-tab-${tabName}`);
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            if (activeTabContent) activeTabContent.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.add('border-indigo-600', 'text-indigo-600');
+                activeBtn.classList.remove('border-transparent', 'text-slate-500');
+            }
+        }
+
+        // RENDER MENTEE PORTAL
+        function renderMenteePortal() {
+            const currentMentee = (state.currentUser && state.currentUser.role === 'mentee')
+                ? state.currentUser
+                : (state.mentees.length > 0 ? state.mentees[0] : null);
+
+            const nameEl = document.getElementById('mentee-dash-name');
+            const mentorCard = document.getElementById('mentee-assigned-mentor-card');
+            const waLink = document.getElementById('mentee-whatsapp-link');
+
+            if (!currentMentee) {
+                if (nameEl) nameEl.innerText = "Student Aspirant";
+                if (mentorCard) {
+                    mentorCard.innerHTML = `
+                        <div class="text-center py-6 space-y-3">
+                            <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <h4 class="font-extrabold text-slate-800 text-sm">No Active Mentee Enrolled</h4>
+                            <p class="text-xs text-slate-500 max-w-xs mx-auto">Please apply via "Apply Now" on the homepage to register, deposit fee, and access your personal IITian mentorship workspace.</p>
+                            <button onclick="openApplyModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition">
+                                <i class="fa-solid fa-paper-plane mr-1"></i> Apply & Register as Mentee
+                            </button>
+                        </div>
+                    `;
+                }
+                if (waLink) waLink.href = "javascript:alert('Please register or login as an enrolled mentee.')";
+                renderMenteeFeedbackHistory();
+                return;
+            }
+
+            if (nameEl) nameEl.innerText = currentMentee.name;
+
+            const assignedMentor = state.mentors.find(m => m.id === currentMentee.assignedMentorId);
+
+            if (mentorCard) {
+                if (assignedMentor) {
+                    mentorCard.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white font-black flex items-center justify-center text-lg shadow">
+                                ${assignedMentor.name.split(' ').map(n=>n[0]).join('')}
+                            </div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-sm">${assignedMentor.name}</h4>
+                                <p class="text-xs font-bold text-indigo-600">${assignedMentor.college} (${assignedMentor.rank})</p>
+                                <p class="text-[11px] text-slate-500">${assignedMentor.branch}</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 pt-2 border-t border-slate-200">${assignedMentor.bio}</p>
+                    `;
+                    if (waLink) waLink.href = `https://wa.me/${(assignedMentor.whatsapp || '').replace(/[^0-9]/g, '')}`;
+                } else {
+                    mentorCard.innerHTML = `
+                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-center space-y-2">
+                            <i class="fa-solid fa-clock-rotate-left text-2xl text-amber-500"></i>
+                            <h4 class="font-bold text-slate-800 text-xs">Mentor Allocation in Progress</h4>
+                            <p class="text-[11px] text-slate-600">Your deposit is verified. Admin is currently pairing you with an IITian mentor matching your JEE exam targets.</p>
+                        </div>
+                    `;
+                    if (waLink) waLink.href = "javascript:alert('Mentor will be assigned soon by Admin!')";
+                }
+            }
+
+            // Populate the feedback form inputs
+            const revMenteeNameInput = document.getElementById('review-mentee-name');
+            if (revMenteeNameInput) revMenteeNameInput.value = currentMentee.name;
+
+            const revMentorSelect = document.getElementById('review-mentor-select');
+            if (revMentorSelect) {
+                revMentorSelect.innerHTML = '';
+                if (assignedMentor) {
+                    const opt = document.createElement('option');
+                    opt.value = `${assignedMentor.name} (${assignedMentor.college})`;
+                    opt.innerText = `${assignedMentor.name} (${assignedMentor.college} - ${assignedMentor.rank})`;
+                    revMentorSelect.appendChild(opt);
+                } else if (state.mentors.length > 0) {
+                    state.mentors.forEach(m => {
+                        const opt = document.createElement('option');
+                        opt.value = `${m.name} (${m.college})`;
+                        opt.innerText = `${m.name} (${m.college} - ${m.rank})`;
+                        revMentorSelect.appendChild(opt);
+                    });
+                } else {
+                    const opt = document.createElement('option');
+                    opt.value = "General Platform & Admin";
+                    opt.innerText = "General Platform & Admin";
+                    revMentorSelect.appendChild(opt);
+                }
+            }
+
+            renderMenteeFeedbackHistory(currentMentee.name);
+        }
+
+        // RENDER MENTEE SUBMITTED FEEDBACK HISTORY
+        function renderMenteeFeedbackHistory(menteeName) {
+            const historyContainer = document.getElementById('mentee-feedback-history');
+            if (!historyContainer) return;
+            historyContainer.innerHTML = '';
+
+            const myReviews = menteeName 
+                ? state.reviews.filter(r => r.menteeName.toLowerCase() === menteeName.toLowerCase())
+                : state.reviews;
+
+            if (myReviews.length === 0) {
+                historyContainer.innerHTML = `<p class="text-slate-400 italic text-[11px] py-1">No feedback submitted yet. Share your experience with your mentor above!</p>`;
+                return;
+            }
+
+            myReviews.forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1';
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-slate-800 text-[11px]">For: ${r.mentorName}</span>
+                        <span class="text-amber-500 font-bold text-[11px]">${'★'.repeat(r.rating)} (${r.rating}/5)</span>
+                    </div>
+                    <div class="text-[10px] text-indigo-600 font-semibold">${r.category || 'General'} • <span class="text-slate-400 font-normal">${r.date}</span></div>
+                    <p class="text-slate-600 italic text-[11px]">"${r.comment}"</p>
+                `;
+                historyContainer.appendChild(item);
+            });
+        }
+
+        // RENDER MENTOR PORTAL
+        function renderMentorPortal() {
+            const grid = document.getElementById('mentor-portal-mentees-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (state.mentors.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white p-10 rounded-2xl border border-dashed border-slate-300 text-center space-y-3">
+                        <i class="fa-solid fa-chalkboard-user text-3xl text-slate-300"></i>
+                        <h4 class="font-bold text-slate-700 text-base">No Mentors Currently Onboarded</h4>
+                        <p class="text-xs text-slate-500 max-w-sm mx-auto">Please log in to the Admin Dashboard to onboard your first verified IITian mentor.</p>
+                        <button onclick="switchView('admin'); openAddMentorModal();" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow">
+                            Go to Admin to Add Mentor
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const currentMentor = (state.currentUser && state.currentUser.role === 'mentor')
+                ? state.currentUser
+                : state.mentors[0];
+
+            const nameEl = document.getElementById('mentor-dash-name');
+            if (nameEl) nameEl.innerText = currentMentor.name;
+
+            const myMentees = state.mentees.filter(m => m.assignedMentorId === currentMentor.id);
+
+            if (myMentees.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white p-8 rounded-2xl border border-dashed border-slate-300 text-center space-y-2">
+                        <i class="fa-solid fa-user-group text-2xl text-slate-300"></i>
+                        <h4 class="font-bold text-slate-700 text-sm">No Mentees Assigned Yet</h4>
+                        <p class="text-xs text-slate-500">When students register or Admin allocates mentees to you, they will appear here with full target controls.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            myMentees.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-extrabold text-slate-900 text-base">${m.name}</h4>
+                            <p class="text-xs text-indigo-600 font-bold">${m.target} | ${m.classLevel}</p>
+                        </div>
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full">Active Mentee</span>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border text-xs space-y-1 text-slate-600">
+                        <p><strong>Enrolled Plan:</strong> ${m.planName}</p>
+                        <p><strong>Contact:</strong> ${m.phone}</p>
+                        <p><strong>Fee Status:</strong> ₹${m.feePaid} Verified</p>
+                    </div>
+
+                    <div class="flex gap-2 text-xs">
+                        <button onclick="alert('Target checklist assignment saved for ${m.name}!')" class="w-1/2 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold transition">
+                            Assign Targets
+                        </button>
+                        <button onclick="alert('Viewing diagnostic test scores for ${m.name}')" class="w-1/2 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg font-bold transition">
+                            View Scores
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // APPLICATION & FEE DEPOSIT WORKFLOW
+        function openApplyModal(mentorId = '', planVal = '') {
+            document.getElementById('receipt-success-container').classList.add('hidden');
+            document.getElementById('application-form').classList.remove('hidden');
+
+            if (mentorId) {
+                document.getElementById('app-mentor').value = mentorId;
+            }
+            if (planVal) {
+                document.getElementById('app-plan').value = planVal;
+            }
+
+            updateDepositAmount();
+            document.getElementById('applyModal').classList.remove('hidden');
+        }
+
+        function closeApplyModal() {
+            document.getElementById('applyModal').classList.add('hidden');
+        }
+
+        function updateDepositAmount() {
+            const val = document.getElementById('app-plan').value;
+            const amount = val.split('|')[1] || '2999';
+            document.getElementById('app-payable-amount').innerText = `₹${parseInt(amount).toLocaleString('en-IN')}`;
+        }
+
+        function handleFeeDepositSubmit(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('app-name').value.trim();
+            const phone = document.getElementById('app-phone').value.trim();
+            const classLevel = document.getElementById('app-class').value;
+            const target = document.getElementById('app-target').value;
+            const planRaw = document.getElementById('app-plan').value;
+            const [planName, feeStr] = planRaw.split('|');
+            const feePaid = parseInt(feeStr) || 2999;
+
+            let mentorIdChoice = document.getElementById('app-mentor').value;
+            let assignedMentorObj = null;
+
+            if (mentorIdChoice !== 'AUTO' && mentorIdChoice) {
+                assignedMentorObj = state.mentors.find(m => m.id === parseInt(mentorIdChoice));
+            } else if (state.mentors.length > 0) {
+                assignedMentorObj = state.mentors.slice().sort((a,b) => (a.menteesCount || 0) - (b.menteesCount || 0))[0];
+            }
+
+            const newReceiptId = 'JEE-REC-' + Math.floor(1000 + Math.random() * 9000);
+
+            const newMentee = {
+                id: newReceiptId,
+                name: name,
+                phone: phone,
+                target: target,
+                classLevel: classLevel,
+                planName: planName,
+                feePaid: feePaid,
+                assignedMentorId: assignedMentorObj ? assignedMentorObj.id : null,
+                date: new Date().toISOString().split('T')[0],
+                status: 'Active'
+            };
+
+            state.mentees.unshift(newMentee);
+            if (assignedMentorObj) {
+                assignedMentorObj.menteesCount = (assignedMentorObj.menteesCount || 0) + 1;
+            }
+
+            saveToStorage();
+
+            // Fill Receipt
+            document.getElementById('rec-id').innerText = '#' + newReceiptId;
+            document.getElementById('rec-name').innerText = name;
+            document.getElementById('rec-amount').innerText = `₹${feePaid.toLocaleString('en-IN')} (Paid via UPI/Card)`;
+            document.getElementById('rec-mentor').innerText = assignedMentorObj ? `${assignedMentorObj.name} (${assignedMentorObj.college})` : 'Allocation in progress by Admin';
+            document.getElementById('rec-date').innerText = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            // Automatically set this newly registered mentee as current user
+            state.currentUser = {
+                role: 'mentee',
+                ...newMentee
+            };
+            updateSessionUI();
+
+            // Show Receipt Success
+            document.getElementById('application-form').classList.add('hidden');
+            document.getElementById('receipt-success-container').classList.remove('hidden');
+
+            // Refresh UI Views
+            renderAdminDashboard();
+            renderMenteePortal();
+            renderMentorPortal();
+            renderPublicMentors();
+            populateMentorDropdowns();
+            showToast(`Registration complete for ${name}! Receipt generated.`);
+        }
+
+        // MENTEE REVIEW & FEEDBACK SUBMISSION
+        function handleMenteeReviewSubmit(e) {
+            e.preventDefault();
+            const rating = parseInt(document.getElementById('review-rating').value);
+            const comment = document.getElementById('review-comment').value.trim();
+            const category = document.getElementById('review-category')?.value || 'Study Strategy';
+            const menteeName = document.getElementById('review-mentee-name')?.value.trim() || state.currentUser?.name || 'Aspirant';
+            const mentorName = document.getElementById('review-mentor-select')?.value || 'Assigned Mentor';
+
+            if (!comment) {
+                alert('Please enter your feedback comments before submitting.');
+                return;
+            }
+
+            const newReview = {
+                id: Date.now(),
+                menteeName: menteeName,
+                mentorName: mentorName,
+                rating: rating,
+                category: category,
+                comment: comment,
+                date: new Date().toISOString().split('T')[0],
+                visible: true
+            };
+
+            state.reviews.unshift(newReview);
+            saveToStorage();
+            renderPublicReviews();
+            renderAdminDashboard();
+            renderMenteeFeedbackHistory(menteeName);
+
+            document.getElementById('review-comment').value = '';
+            showToast('Thank you! Your feedback has been sent directly to the Admin panel.');
+        }
+
+        // TOGGLE REVIEW VISIBILITY (ADMIN)
+        function toggleReviewVisibility(id) {
+            const rev = state.reviews.find(r => r.id === id);
+            if (rev) {
+                rev.visible = !rev.visible;
+                saveToStorage();
+                renderAdminDashboard();
+                renderPublicReviews();
+                showToast(`Review visibility updated to: ${rev.visible ? 'Published' : 'Hidden'}`);
+            }
+        }
+
+        function deleteReview(id) {
+            if (!confirm('Are you sure you want to delete this review?')) return;
+            state.reviews = state.reviews.filter(r => r.id !== id);
+            saveToStorage();
+            renderAdminDashboard();
+            renderPublicReviews();
+            renderMenteeFeedbackHistory();
+            showToast('Review deleted.');
+        }
+
+        // ADMIN MODALS & ACTIONS
+        function openAddMentorModal() {
+            document.getElementById('addMentorModal').classList.remove('hidden');
+        }
+        function closeAddMentorModal() {
+            document.getElementById('addMentorModal').classList.add('hidden');
+        }
+
+        function handleCreateMentorSubmit(e) {
+            e.preventDefault();
+            const rankVal = document.getElementById('new-mentor-rank').value.trim();
+            const formattedRank = rankVal.toUpperCase().startsWith('AIR') ? rankVal.toUpperCase() : `AIR ${rankVal}`;
+            const newM = {
+                id: Date.now(),
+                name: document.getElementById('new-mentor-name').value.trim(),
+                college: document.getElementById('new-mentor-college').value,
+                branch: document.getElementById('new-mentor-branch').value.trim(),
+                rank: formattedRank,
+                rating: parseFloat(document.getElementById('new-mentor-rating')?.value || '5.0'),
+                menteesCount: 0,
+                maxCapacity: parseInt(document.getElementById('new-mentor-capacity')?.value || '5'),
+                bio: document.getElementById('new-mentor-bio').value.trim() || 'IITian Mentor guiding JEE aspirants.',
+                whatsapp: document.getElementById('new-mentor-whatsapp')?.value.trim() || '+919876543210'
+            };
+
+            state.mentors.unshift(newM);
+            saveToStorage();
+            renderPublicMentors();
+            renderAdminDashboard();
+            populateMentorDropdowns();
+            renderMentorPortal();
+            renderMenteePortal();
+            closeAddMentorModal();
+            showToast(`Mentor ${newM.name} (${newM.college}) added to mentor list successfully!`);
+            e.target.reset();
+        }
+
+        function editMentorCapacity(mentorId) {
+            const mentor = state.mentors.find(m => m.id == mentorId);
+            if (!mentor) return;
+            const newCap = prompt(`Enter new student capacity for ${mentor.name}:`, mentor.maxCapacity);
+            if (newCap && !isNaN(parseInt(newCap))) {
+                mentor.maxCapacity = parseInt(newCap);
+                saveToStorage();
+                renderAdminDashboard();
+                renderPublicMentors();
+                showToast(`Capacity updated to ${mentor.maxCapacity} for ${mentor.name}`);
+            }
+        }
+
+        function deleteMentor(mentorId) {
+            const mId = parseInt(mentorId);
+            const mentor = state.mentors.find(m => m.id == mId);
+            if (!confirm(`Are you sure you want to remove mentor ${mentor?.name || ''}? Mentees assigned to this mentor will become unassigned.`)) return;
+
+            state.mentors = state.mentors.filter(m => m.id != mId);
+            state.mentees.forEach(mentee => {
+                if (mentee.assignedMentorId == mId) {
+                    mentee.assignedMentorId = null;
+                }
+            });
+            saveToStorage();
+            renderPublicMentors();
+            renderAdminDashboard();
+            populateMentorDropdowns();
+            renderMentorPortal();
+            renderMenteePortal();
+            showToast('Mentor removed successfully.');
+        }
+
+        function reassignMenteeMentor(recId, mentorIdVal) {
+            const mentee = state.mentees.find(m => m.id === recId);
+            if (!mentee) return;
+
+            const oldMentorId = mentee.assignedMentorId;
+            const newMentorId = mentorIdVal ? parseInt(mentorIdVal) : null;
+
+            if (oldMentorId && oldMentorId != newMentorId) {
+                const oldM = state.mentors.find(m => m.id == oldMentorId);
+                if (oldM && oldM.menteesCount > 0) oldM.menteesCount--;
+            }
+
+            if (newMentorId) {
+                const newM = state.mentors.find(m => m.id == newMentorId);
+                if (newM) newM.menteesCount = (newM.menteesCount || 0) + 1;
+            }
+
+            mentee.assignedMentorId = newMentorId;
+            saveToStorage();
+            renderAdminDashboard();
+            renderPublicMentors();
+            renderMenteePortal();
+            renderMentorPortal();
+            const assignedName = newMentorId ? state.mentors.find(m => m.id == newMentorId)?.name : 'Unassigned';
+            showToast(`Mentee ${mentee.name} reassigned to ${assignedName}!`);
+        }
+
+        function deleteMentee(recId) {
+            const mentee = state.mentees.find(m => m.id === recId);
+            if (!confirm(`Are you sure you want to delete mentee record ${recId} (${mentee?.name || ''})?`)) return;
+
+            if (mentee && mentee.assignedMentorId) {
+                const mentor = state.mentors.find(men => men.id == mentee.assignedMentorId);
+                if (mentor && mentor.menteesCount > 0) mentor.menteesCount--;
+            }
+
+            state.mentees = state.mentees.filter(m => m.id !== recId);
+            saveToStorage();
+            renderAdminDashboard();
+            renderPublicMentors();
+            renderMenteePortal();
+            renderMentorPortal();
+            showToast('Mentee record deleted.');
+        }
+
+        function openBroadcastModal() {
+            document.getElementById('broadcastModal').classList.remove('hidden');
+        }
+        function closeBroadcastModal() {
+            document.getElementById('broadcastModal').classList.add('hidden');
+        }
+        function saveAnnouncement() {
+            const txt = document.getElementById('broadcast-input-text').value;
+            document.getElementById('announcement-text').innerText = txt;
+            closeBroadcastModal();
+            showToast('Announcement Bar updated live on website!');
+        }
+
+        function triggerReviewBroadcast() {
+            if (state.mentees.length === 0) {
+                alert('No active mentees enrolled yet to send review request.');
+                return;
+            }
+            showToast(`Automated review requests sent via WhatsApp to all ${state.mentees.length} active mentees!`);
+        }
+
+        function populateMentorDropdowns() {
+            // Populate Application Form Mentor Dropdown
+            const selectApp = document.getElementById('app-mentor');
+            if (selectApp) {
+                selectApp.innerHTML = '<option value="AUTO">Auto-Allocate Best IITian Match (Recommended)</option>';
+                state.mentors.forEach(m => {
+                    const opt = document.createElement('option');
+                    opt.value = m.id;
+                    opt.innerText = `${m.name} (${m.college} - ${m.rank})`;
+                    selectApp.appendChild(opt);
+                });
+            }
+
+            // Populate On-Page Login Mentor Dropdown
+            const selectSec = document.getElementById('sec-mentor-profile-select');
+            const secStatusText = document.getElementById('sec-mentor-status-text');
+            if (selectSec) {
+                selectSec.innerHTML = '';
+                if (state.mentors.length === 0) {
+                    selectSec.innerHTML = '<option disabled selected>No mentors onboarded yet</option>';
+                    if (secStatusText) secStatusText.innerText = 'No mentors onboarded yet. Admin can add mentors in the Admin Portal.';
+                } else {
+                    state.mentors.forEach(m => {
+                        const opt = document.createElement('option');
+                        opt.value = m.id;
+                        opt.innerText = `${m.name} — ${m.college} (${m.rank})`;
+                        selectSec.appendChild(opt);
+                    });
+                    if (secStatusText) secStatusText.innerText = 'Select your mentor profile to sign in.';
+                }
+            }
+
+            // Populate Modal Login Mentor Dropdown
+            const selectModal = document.getElementById('modal-mentor-profile-select');
+            const modalStatusText = document.getElementById('modal-mentor-status-text');
+            if (selectModal) {
+                selectModal.innerHTML = '';
+                if (state.mentors.length === 0) {
+                    selectModal.innerHTML = '<option disabled selected>No mentors onboarded yet</option>';
+                    if (modalStatusText) modalStatusText.innerText = 'No mentors onboarded yet. Please add a mentor via Admin.';
+                } else {
+                    state.mentors.forEach(m => {
+                        const opt = document.createElement('option');
+                        opt.value = m.id;
+                        opt.innerText = `${m.name} — ${m.college} (${m.rank})`;
+                        selectModal.appendChild(opt);
+                    });
+                    if (modalStatusText) modalStatusText.innerText = 'Select your mentor profile to sign in.';
+                }
+            }
+
+            // Update Mentee Status Boxes
+            const secMenteeStatus = document.getElementById('sec-mentee-status-text');
+            const modalMenteeStatus = document.getElementById('modal-mentee-status-text');
+            if (state.mentees.length === 0) {
+                if (secMenteeStatus) secMenteeStatus.innerText = 'No mentees enrolled yet. Apply via "Apply Now" to get started.';
+                if (modalMenteeStatus) modalMenteeStatus.innerText = 'No mentees enrolled yet. Apply via "Apply Now" to get started.';
+            } else {
+                if (secMenteeStatus) secMenteeStatus.innerText = `Enter your registered phone or Student ID to login.`;
+                if (modalMenteeStatus) modalMenteeStatus.innerText = `Enter your registered phone or Student ID to login.`;
+            }
+        }
+
+        // ==========================================
+        // LOGIN & AUTHENTICATION CONTROLLERS
+        // ==========================================
+
+        function switchLoginSectionTab(role) {
+            const roles = ['mentee', 'mentor', 'admin'];
+            roles.forEach(r => {
+                const formEl = document.getElementById(`sec-login-form-${r}`);
+                const btnEl = document.getElementById(`sec-tab-btn-${r}`);
+                if (formEl) formEl.classList.add('hidden');
+                if (btnEl) {
+                    btnEl.classList.remove('bg-emerald-950/40', 'border-emerald-500', 'bg-indigo-950/40', 'border-indigo-500', 'bg-amber-950/40', 'border-amber-500', 'shadow-lg');
+                    btnEl.classList.add('bg-slate-800/50', 'border-slate-700/80');
+                }
+            });
+
+            const activeForm = document.getElementById(`sec-login-form-${role}`);
+            const activeBtn = document.getElementById(`sec-tab-btn-${role}`);
+            if (activeForm) activeForm.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-800/50', 'border-slate-700/80');
+                if (role === 'mentee') {
+                    activeBtn.classList.add('bg-emerald-950/40', 'border-emerald-500', 'shadow-lg');
+                } else if (role === 'mentor') {
+                    activeBtn.classList.add('bg-indigo-950/40', 'border-indigo-500', 'shadow-lg');
+                } else if (role === 'admin') {
+                    activeBtn.classList.add('bg-amber-950/40', 'border-amber-500', 'shadow-lg');
+                }
+            }
+        }
+
+        function switchModalLoginTab(role) {
+            const roles = ['mentee', 'mentor', 'admin'];
+            roles.forEach(r => {
+                const formEl = document.getElementById(`modal-login-form-${r}`);
+                const btnEl = document.getElementById(`modal-tab-btn-${r}`);
+                if (formEl) formEl.classList.add('hidden');
+                if (btnEl) {
+                    btnEl.classList.remove('border-emerald-500', 'text-emerald-700', 'bg-emerald-50', 'border-indigo-600', 'text-indigo-700', 'bg-indigo-50', 'border-amber-500', 'text-amber-700', 'bg-amber-50', 'shadow-sm');
+                    btnEl.classList.add('border-transparent', 'text-slate-600');
+                }
+            });
+
+            const activeForm = document.getElementById(`modal-login-form-${role}`);
+            const activeBtn = document.getElementById(`modal-tab-btn-${role}`);
+            if (activeForm) activeForm.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.remove('border-transparent', 'text-slate-600');
+                if (role === 'mentee') {
+                    activeBtn.classList.add('border-emerald-500', 'text-emerald-700', 'bg-emerald-50', 'shadow-sm');
+                } else if (role === 'mentor') {
+                    activeBtn.classList.add('border-indigo-600', 'text-indigo-700', 'bg-indigo-50', 'shadow-sm');
+                } else if (role === 'admin') {
+                    activeBtn.classList.add('border-amber-500', 'text-amber-700', 'bg-amber-50', 'shadow-sm');
+                }
+            }
+        }
+
+        function openLoginModal(role = 'mentee') {
+            switchModalLoginTab(role);
+            const modal = document.getElementById('loginModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function handleFormLogin(e, role) {
+            if (e) e.preventDefault();
+            
+            if (role === 'mentee') {
+                const phone = (document.getElementById('sec-mentee-phone')?.value || document.getElementById('modal-mentee-phone')?.value || '').trim();
+                
+                if (state.mentees.length === 0) {
+                    alert('No mentees registered in system yet. Please apply via "Apply Now" on the homepage first.');
+                    return;
+                }
+
+                // Match mentee by phone or receipt ID, or take the first mentee if field left blank
+                const matchedMentee = state.mentees.find(m => m.phone.includes(phone) || m.id.toLowerCase() === phone.toLowerCase()) || state.mentees[0];
+
+                state.currentUser = {
+                    role: 'mentee',
+                    ...matchedMentee
+                };
+                updateSessionUI();
+                renderMenteePortal();
+                closeLoginModal();
+                switchView('mentee');
+                showToast(`Welcome back, ${state.currentUser.name}! Signed in as Mentee.`);
+            } else if (role === 'mentor') {
+                if (state.mentors.length === 0) {
+                    alert('No mentors onboarded yet. Please log into Admin and add a mentor first.');
+                    return;
+                }
+                const mentorId = parseInt(document.getElementById('sec-mentor-profile-select')?.value || document.getElementById('modal-mentor-profile-select')?.value || state.mentors[0].id);
+                const mentorObj = state.mentors.find(m => m.id === mentorId) || state.mentors[0];
+                state.currentUser = {
+                    role: 'mentor',
+                    id: mentorObj.id,
+                    name: mentorObj.name,
+                    college: mentorObj.college,
+                    branch: mentorObj.branch,
+                    rank: mentorObj.rank,
+                    whatsapp: mentorObj.whatsapp
+                };
+                updateSessionUI();
+                renderMentorPortal();
+                closeLoginModal();
+                switchView('mentor');
+                showToast(`Welcome, ${mentorObj.name}! Signed in as Mentor.`);
+            } else if (role === 'admin') {
+                state.currentUser = {
+                    role: 'admin',
+                    name: 'Super Admin',
+                    email: 'admin@jeesociety.com'
+                };
+                updateSessionUI();
+                renderAdminDashboard();
+                closeLoginModal();
+                switchView('admin');
+                showToast('Administrator authenticated. Welcome to Control Console.');
+            }
+        }
+
+        function quickFillAndLogin(role) {
+            handleFormLogin(null, role);
+        }
+
+        function handleLogout() {
+            state.currentUser = null;
+            updateSessionUI();
+            switchView('public');
+            showToast('You have logged out successfully.');
+        }
+
+        function updateSessionUI() {
+            const loginBtn = document.getElementById('header-login-btn');
+            const sessionPill = document.getElementById('user-session-pill');
+            const roleBadge = document.getElementById('session-role-badge');
+            const userName = document.getElementById('session-user-name');
+
+            if (state.currentUser) {
+                if (loginBtn) loginBtn.classList.add('hidden');
+                if (sessionPill) {
+                    sessionPill.classList.remove('hidden');
+                    sessionPill.classList.add('flex');
+                }
+
+                if (state.currentUser.role === 'mentee') {
+                    if (roleBadge) {
+                        roleBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                        roleBadge.innerText = 'Mentee';
+                    }
+                    if (userName) userName.innerText = state.currentUser.name;
+                } else if (state.currentUser.role === 'mentor') {
+                    if (roleBadge) {
+                        roleBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30';
+                        roleBadge.innerText = 'Mentor';
+                    }
+                    if (userName) userName.innerText = state.currentUser.name;
+                } else if (state.currentUser.role === 'admin') {
+                    if (roleBadge) {
+                        roleBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                        roleBadge.innerText = 'Admin';
+                    }
+                    if (userName) userName.innerText = state.currentUser.name;
+                }
+            } else {
+                if (loginBtn) loginBtn.classList.remove('hidden');
+                if (sessionPill) {
+                    sessionPill.classList.add('hidden');
+                    sessionPill.classList.remove('flex');
+                }
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('system-toast');
+            const msgEl = document.getElementById('toast-message');
+            if (!toast || !msgEl) return;
+            msgEl.innerText = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        // CHART.JS MOCK TEST TRACKER
+        function initChart() {
+            const canvas = document.getElementById('menteeProgressChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mock 1', 'Mock 2', 'Mock 3', 'Mock 4', 'Mock 5', 'Latest Mock'],
+                    datasets: [{
+                        label: 'Total JEE Advanced Score (out of 300)',
+                        data: [112, 128, 145, 139, 168, 184],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#047857'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: { beginAtZero: false, min: 80, max: 250 }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <!-- SYSTEM TOAST NOTIFICATION -->
+    <div id="system-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900/95 border border-slate-700 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs backdrop-blur-md">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="toast-message" class="font-semibold text-slate-100">Notification</span>
+        </div>
+    </div>
+</body>
+</html>
