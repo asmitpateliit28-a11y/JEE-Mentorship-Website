@@ -1,0 +1,330 @@
+/* ==========================================================================
+   JEE CIRCLE - MULTI-THEME REFINED STYLESHEET
+   Themes:
+     1. Light (Modern Crisp Clean UI)
+     2. Flux (Warm Amber/Sepia Eye-Care Paper Mode)
+     3. Dark (Midnight Obsidian & High-Contrast Slate)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ==========================================
+   THEME VARIABLE DEFINITIONS
+   ========================================== */
+
+/* 1. DEFAULT LIGHT THEME */
+:root, [data-theme="light"] {
+    --bg-page: #F8F9FA;
+    --bg-surface: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F1F3F5;
+    --bg-elevated: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+    --border-subtle: #F1F5F9;
+    --accent: #D97706;
+    --accent-hover: #B45309;
+    --accent-light: #FEF3C7;
+    --accent-border: #FDE68A;
+    --hero-bg: #0F172A;
+    --hero-surface: #1E293B;
+    --hero-text: #FFFFFF;
+    --hero-border: #334155;
+    --navbar-bg: rgba(255, 255, 255, 0.94);
+    --footer-bg: #FFFFFF;
+    --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+}
+
+/* 2. FLUX THEME (Warm Amber / Sepia / Night Eye-Comfort) */
+[data-theme="flux"] {
+    --bg-page: #F5E9D3;
+    --bg-surface: #FCF4E6;
+    --bg-card: #FCF4E6;
+    --bg-subtle: #EDDCC2;
+    --bg-elevated: #FFF9EE;
+    --text-primary: #2C2117;
+    --text-secondary: #4A3A2C;
+    --text-muted: #7A6652;
+    --border-color: #DFCBA8;
+    --border-subtle: #E8D8BA;
+    --accent: #C86000;
+    --accent-hover: #A84E00;
+    --accent-light: #FBE4C3;
+    --accent-border: #F4CCA1;
+    --hero-bg: #2B2016;
+    --hero-surface: #382A1C;
+    --hero-text: #FFF8EE;
+    --hero-border: #4D3B29;
+    --navbar-bg: rgba(245, 233, 211, 0.95);
+    --footer-bg: #FCF4E6;
+    --card-shadow: 0 4px 20px -2px rgba(44, 33, 23, 0.08), 0 2px 6px -1px rgba(44, 33, 23, 0.04);
+}
+
+/* 3. DARK THEME (Midnight Slate & Obsidian) */
+[data-theme="dark"] {
+    --bg-page: #0B0F19;
+    --bg-surface: #111827;
+    --bg-card: #151E2E;
+    --bg-subtle: #1E293B;
+    --bg-elevated: #1A2438;
+    --text-primary: #F8FAFC;
+    --text-secondary: #CBD5E1;
+    --text-muted: #94A3B8;
+    --border-color: #243048;
+    --border-subtle: #1C263A;
+    --accent: #F59E0B;
+    --accent-hover: #D97706;
+    --accent-light: #382806;
+    --accent-border: #78350F;
+    --hero-bg: #070A10;
+    --hero-surface: #0F1524;
+    --hero-text: #F8FAFC;
+    --hero-border: #1E2A40;
+    --navbar-bg: rgba(11, 15, 25, 0.95);
+    --footer-bg: #0D1322;
+    --card-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================
+   GLOBAL BASE STYLES
+   ========================================== */
+
+body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-page) !important;
+    color: var(--text-primary) !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Theme Adaptive Components */
+.theme-navbar {
+    background-color: var(--navbar-bg) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.theme-card {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+.theme-subtle {
+    background-color: var(--bg-subtle) !important;
+    border-color: var(--border-color) !important;
+}
+
+.theme-text-primary {
+    color: var(--text-primary) !important;
+}
+
+.theme-text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.theme-text-muted {
+    color: var(--text-muted) !important;
+}
+
+.theme-hero-card {
+    background-color: var(--hero-bg) !important;
+    border-color: var(--hero-border) !important;
+    color: var(--hero-text) !important;
+}
+
+.theme-footer {
+    background-color: var(--footer-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Subtle background grid */
+.bg-subtle-grid {
+    background-size: 24px 24px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+[data-theme="flux"] .bg-subtle-grid {
+    background-image: linear-gradient(to right, rgba(44, 33, 23, 0.05) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(44, 33, 23, 0.05) 1px, transparent 1px);
+}
+
+[data-theme="dark"] .bg-subtle-grid {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+/* Hover Lift */
+.hover-lift {
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
+}
+.hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.1), 0 6px 12px -4px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-subtle);
+}
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 9999px;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+[data-theme="flux"] ::-webkit-scrollbar-thumb {
+    background: #D4BE98;
+}
+
+/* ==========================================
+   HIGH-IMPACT THEME CASCADE OVERRIDES
+   Ensures Tailwind utility classes adapt smoothly
+   ========================================== */
+
+/* 1. DARK THEME OVERRIDES */
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .bg-stone-50,
+[data-theme="dark"] .bg-slate-50,
+[data-theme="dark"] .bg-\[\#FAF8F5\],
+[data-theme="dark"] .bg-\[\#FAF8F5\]\/95,
+[data-theme="dark"] .bg-\[\#FAF8F5\]\/80 {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .bg-stone-100,
+[data-theme="dark"] .bg-slate-100,
+[data-theme="dark"] .bg-stone-200\/60 {
+    background-color: var(--bg-subtle) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] header.theme-header {
+    background-color: rgba(17, 24, 39, 0.95) !important;
+    border-color: #243048 !important;
+}
+
+[data-theme="dark"] footer {
+    background-color: #0D1322 !important;
+    border-color: #1E293B !important;
+}
+
+[data-theme="dark"] .text-slate-900,
+[data-theme="dark"] .text-slate-800,
+[data-theme="dark"] .text-stone-900,
+[data-theme="dark"] .text-stone-800 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .text-slate-600,
+[data-theme="dark"] .text-stone-600,
+[data-theme="dark"] .text-slate-500,
+[data-theme="dark"] .text-stone-500 {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .border-slate-200,
+[data-theme="dark"] .border-stone-200,
+[data-theme="dark"] .border-stone-200\/80,
+[data-theme="dark"] .border-stone-300,
+[data-theme="dark"] .border-slate-300,
+[data-theme="dark"] .border-\[\#E8E2D8\] {
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] input:not([type="radio"]):not([type="checkbox"]),
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+    background-color: #0F172A !important;
+    color: #F8FAFC !important;
+    border-color: #334155 !important;
+}
+
+/* 2. FLUX THEME (WARM SEPIA / PAPER FOCUS) OVERRIDES */
+[data-theme="flux"] .bg-white,
+[data-theme="flux"] .bg-stone-50,
+[data-theme="flux"] .bg-slate-50,
+[data-theme="flux"] .bg-\[\#FAF8F5\],
+[data-theme="flux"] .bg-\[\#FAF8F5\]\/95,
+[data-theme="flux"] .bg-\[\#FAF8F5\]\/80 {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="flux"] .bg-stone-100,
+[data-theme="flux"] .bg-slate-100 {
+    background-color: var(--bg-subtle) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="flux"] header.theme-header {
+    background-color: rgba(245, 233, 211, 0.96) !important;
+    border-color: #DFCBA8 !important;
+}
+
+[data-theme="flux"] footer {
+    background-color: #FCF4E6 !important;
+    border-color: #DFCBA8 !important;
+}
+
+[data-theme="flux"] .text-slate-900,
+[data-theme="flux"] .text-slate-800,
+[data-theme="flux"] .text-stone-900,
+[data-theme="flux"] .text-stone-800 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="flux"] .text-slate-600,
+[data-theme="flux"] .text-stone-600,
+[data-theme="flux"] .text-slate-500,
+[data-theme="flux"] .text-stone-500 {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="flux"] .border-slate-200,
+[data-theme="flux"] .border-stone-200,
+[data-theme="flux"] .border-stone-200\/80,
+[data-theme="flux"] .border-stone-300,
+[data-theme="flux"] .border-slate-300,
+[data-theme="flux"] .border-\[\#E8E2D8\] {
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="flux"] input:not([type="radio"]):not([type="checkbox"]),
+[data-theme="flux"] select,
+[data-theme="flux"] textarea {
+    background-color: #FFF9EE !important;
+    color: #2C2117 !important;
+    border-color: #DFCBA8 !important;
+}
+
+/* Print Styles for Fee Receipt */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #receipt-print-area, #receipt-print-area * {
+        visibility: visible;
+    }
+    #receipt-print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+        border: none;
+    }
+}
